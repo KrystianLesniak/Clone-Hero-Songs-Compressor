@@ -12,7 +12,7 @@ Note that this process is very resource hungry and can take up to several hours 
 
 Note: Clone Hero Songs Compressor currently only supports Windows 64-bit OS.
 
-1. Download the latest release of the application from the "Release" page on the right-hand side of the page. Extract into seperate directory.
+1. Download the latest archive of the application from the "Release" page on the right-hand side of the page. Extract into seperate directory.
 
 2. Run the executable in root directory, and select the "Add New Directory" button to specify the directory where your Clone Hero songs are located.
 
@@ -20,7 +20,7 @@ Note: Clone Hero Songs Compressor currently only supports Windows 64-bit OS.
 
 4. Wait until the compression process is complete. The amount of time this takes will depend on the size of your library.
 
-5. Once the process is complete, close the application and open the settings menu in Clone Hero and your songs. Your compressed songs will now be available to play in Clone Hero.
+5. Once the process is complete, close the application and open the settings menu in Clone Hero and rescan your songs. Your compressed songs will now be available to play in Clone Hero.
 
 If you encounter any issues do not hesitate to create an [issue ticket via GitHub](https://github.com/KrystianLesniak/Clone-Hero-Songs-Compressor/issues)
 
