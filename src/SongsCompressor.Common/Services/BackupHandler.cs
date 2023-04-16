@@ -23,7 +23,8 @@ namespace SongsCompressor.Common.Services
             this.backupDirectory = PrepareBackupDirectoryPath(originalDirectory);
         }
 
-        private DirectoryInfo PrepareBackupDirectoryPath(DirectoryInfo originalDirectory){
+        private DirectoryInfo PrepareBackupDirectoryPath(DirectoryInfo originalDirectory)
+        {
 
             var backupPath = Path.Combine(originalDirectory.Parent?.FullName ?? string.Empty, originalDirectory.Name + _backupFolderModifier);
 
@@ -33,10 +34,10 @@ namespace SongsCompressor.Common.Services
         public async Task BackupFile(FileInfo file)
         {
             if (IsBackupActivated == false)
-                return;  
+                return;
 
             string backupFilePath = file.FullName.Replace(originalDirectory.FullName, backupDirectory.FullName);
-            
+
             Directory.CreateDirectory(Path.GetDirectoryName(backupFilePath) ?? string.Empty);
             File.Copy(file.FullName, backupFilePath, true);
 

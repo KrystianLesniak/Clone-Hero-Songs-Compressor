@@ -1,5 +1,4 @@
-﻿using SongsCompressor.Common.Enums;
-using SongsCompressor.Common.Models;
+﻿using SongsCompressor.Common.Models;
 
 namespace SongsCompressor.Common.Interfaces
 {

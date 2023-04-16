@@ -4,7 +4,6 @@ using SongsCompressor.Common.Interfaces;
 using SongsCompressor.Common.Models;
 using SongsCompressor.Common.Services;
 using SongsCompressor.ImagePngToJpgConverter;
-using System.IO;
 
 namespace SongCompressor.MainManager
 {
@@ -35,7 +34,7 @@ namespace SongCompressor.MainManager
         {
             _progressStatus = ProgressStatusEnum.InProgress;
             int index = 0;
-            foreach(var engine in Engines)
+            foreach (var engine in Engines)
             {
                 _currentlyRunningEngine = engine;
                 _enginesPercentageComplete = (int)Math.Round((double)(100 * index) / Engines.Count);

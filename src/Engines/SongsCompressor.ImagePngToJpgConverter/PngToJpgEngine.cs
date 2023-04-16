@@ -53,7 +53,7 @@ namespace SongsCompressor.ImagePngToJpgConverter
                 _currentWorkDescription = $"Converting file {pngFile.Directory?.Name}\\{pngFile.Name} into JPEG format";
                 index++;
 
-                if (index % (Environment.ProcessorCount / 2 ) == 0)
+                if (index % (Environment.ProcessorCount / 2) == 0)
                 {
                     await Task.WhenAll(_convertingTasks);
                     _percentageComplete = (int)Math.Round((double)(100 * index) / pngsCount);
@@ -75,7 +75,7 @@ namespace SongsCompressor.ImagePngToJpgConverter
                 image.Format = MagickFormat.Jpeg;
                 image.Quality = 80;
 
-                if(pngFileInfo.Name == _albumFileName) //Resize albums cover to 500px
+                if (pngFileInfo.Name == _albumFileName) //Resize albums cover to 500px
                     image.Resize(500, 0);
 
                 await image.WriteAsync(Path.ChangeExtension(pngFileInfo.FullName, ".jpg"));
