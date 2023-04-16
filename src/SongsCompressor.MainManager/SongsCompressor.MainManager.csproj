@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net7.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Engines\SongsCompressor.AudioToOpusConverter\SongsCompressor.AudioToOpusConverter.csproj" />
+    <ProjectReference Include="..\Engines\SongsCompressor.ImagePngToJpgConverter\SongsCompressor.ImagePngToJpgConverter.csproj" />
+    <ProjectReference Include="..\SongsCompressor.Common\SongsCompressor.Common.csproj" />
+  </ItemGroup>
+
+</Project>
