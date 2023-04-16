@@ -1,7 +1,9 @@
 {
   "profiles": {
     "Windows Machine": {
-      "commandName": "MsixPackage",
+      //Uncomment for Msix deployment
+      //"commandName": "MsixPackage",
+      "commandName": "Project",
       "nativeDebugging": false
     }
   }
