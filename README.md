@@ -29,9 +29,7 @@ If you encounter any issues do not hesitate to create an [issue ticket via GitHu
 ## About
 Such size reduction is achieved through the use of advanced compression and conversion techniques, such as those used by the Opus audio codec and JPEG image format.
 
-Converting PNG to JPG is handled by [Magick.NET](https://github.com/dlemstra/Magick.NET)
-<br>
-Converting Audio files to Opus is handled by [FFmpeg](https://ffmpeg.org/) and wrapper [FFMpegCore](https://github.com/rosenbjerg/FFMpegCore)
+Converting Audio files to Opus & PNG to JPG is handled by [FFmpeg](https://ffmpeg.org/) and wrapper [FFMpegCore](https://github.com/rosenbjerg/FFMpegCore)
 <br>
 UI is done with [MudBlazor](https://mudblazor.com/)
 
