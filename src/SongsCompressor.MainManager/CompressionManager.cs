@@ -1,9 +1,9 @@
-﻿using SongCompressor.AudioToOpusConverter;
+﻿using Engine.AudioToOpusConverter;
+using Engine.ImagePngToJpgConverter;
 using SongsCompressor.Common.Enums;
 using SongsCompressor.Common.Interfaces;
 using SongsCompressor.Common.Models;
 using SongsCompressor.Common.Services;
-using SongsCompressor.ImagePngToJpgConverter;
 
 namespace SongCompressor.MainManager
 {
@@ -34,7 +34,7 @@ namespace SongCompressor.MainManager
         {
             _progressStatus = ProgressStatusEnum.InProgress;
             int index = 0;
-            foreach (var engine in Engines)
+            foreach (var engine in Engines.OrderBy(x=>x.ExecutionOrder))
             {
                 _currentlyRunningEngine = engine;
                 _enginesPercentageComplete = (int)Math.Round((double)(100 * index) / Engines.Count);

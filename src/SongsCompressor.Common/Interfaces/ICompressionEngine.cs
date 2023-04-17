@@ -6,5 +6,6 @@ namespace SongsCompressor.Common.Interfaces
     {
         Task Start();
         Task<EngineProgressStatus> GetCurrentProgress();
+        int ExecutionOrder { get; }
     }
 }

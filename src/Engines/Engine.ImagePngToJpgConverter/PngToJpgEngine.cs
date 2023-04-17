@@ -1,11 +1,12 @@
 ﻿using ImageMagick;
+using SongsCompressor.Common.Base_Classes;
 using SongsCompressor.Common.Enums;
 using SongsCompressor.Common.Interfaces;
 using SongsCompressor.Common.Models;
 
-namespace SongsCompressor.ImagePngToJpgConverter
+namespace Engine.ImagePngToJpgConverter
 {
-    public class PngToJpgEngine : ICompressionEngine
+    public class PngToJpgEngine : BaseEngine
     {
         private readonly DirectoryInfo directoryInfo;
         private readonly IBackupHandler backupHandler;
@@ -31,7 +32,7 @@ namespace SongsCompressor.ImagePngToJpgConverter
             return null;
         }
 
-        public Task<EngineProgressStatus> GetCurrentProgress()
+        public override Task<EngineProgressStatus> GetCurrentProgress()
         {
             return Task.FromResult(
                 new EngineProgressStatus
@@ -41,7 +42,7 @@ namespace SongsCompressor.ImagePngToJpgConverter
                 });
         }
 
-        public async Task Start()
+        public override async Task Start()
         {
             var pngs = directoryInfo.GetFiles("*.png", SearchOption.AllDirectories);
             var pngsCount = pngs.Length;

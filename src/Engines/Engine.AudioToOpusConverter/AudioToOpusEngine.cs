@@ -1,12 +1,13 @@
 ﻿using FFMpegCore;
+using SongsCompressor.Common.Base_Classes;
 using SongsCompressor.Common.Enums;
 using SongsCompressor.Common.Interfaces;
 using SongsCompressor.Common.Models;
 using System.Reflection;
 
-namespace SongCompressor.AudioToOpusConverter
+namespace Engine.AudioToOpusConverter
 {
-    public class AudioToOpusEngine : ICompressionEngine
+    public class AudioToOpusEngine : BaseEngine
     {
         private readonly DirectoryInfo directoryInfo;
         private readonly IBackupHandler backupHandler;
@@ -31,12 +32,12 @@ namespace SongCompressor.AudioToOpusConverter
             return null;
         }
 
-        public Task<EngineProgressStatus> GetCurrentProgress()
+        public override Task<EngineProgressStatus> GetCurrentProgress()
         {
             return Task.FromResult(_progress);
         }
 
-        public async Task Start()
+        public override async Task Start()
         {
             var convertingTasks = new HashSet<Task>();
             _progress.WorkDescription = "Retrieving Audio files";
