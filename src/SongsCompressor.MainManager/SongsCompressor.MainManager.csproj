@@ -8,6 +8,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Engines\Engine.AudioToOpusConverter\Engine.AudioToOpusConverter.csproj" />
+    <ProjectReference Include="..\Engines\Engine.FFmpegProvider\Engine.FFmpegProvider.csproj" />
     <ProjectReference Include="..\Engines\Engine.ImagePngToJpgConverter\Engine.ImagePngToJpgConverter.csproj" />
     <ProjectReference Include="..\SongsCompressor.Common\SongsCompressor.Common.csproj" />
   </ItemGroup>
