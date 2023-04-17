@@ -21,8 +21,6 @@ namespace Engine.AudioToOpusConverter
             this.directoryInfo = directoryInfo ?? throw new ArgumentNullException(nameof(directoryInfo));
             this.options = options ?? throw new ArgumentNullException(nameof(options));
             this.backupHandler = backupHandler ?? throw new ArgumentNullException(nameof(backupHandler));
-
-            GlobalFFOptions.Configure(options => options.BinaryFolder = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) ?? string.Empty);
         }
         public static ICompressionEngine? Create(IList<OptionsEnum> options, DirectoryInfo directoryInfo, IBackupHandler backupHandler)
         {
