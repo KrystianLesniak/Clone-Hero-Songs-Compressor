@@ -1,4 +1,5 @@
 ﻿using Engine.AudioToOpusConverter;
+using Engine.FFmpegProvider;
 using Engine.ImagePngToJpgConverter;
 using SongsCompressor.Common.Enums;
 using SongsCompressor.Common.Interfaces;
@@ -20,11 +21,7 @@ namespace SongCompressor.MainManager
         {
             _progressStatus = ProgressStatusEnum.Initializing;
 
-            foreach (var directory in directories)
-            {
-                var directoryInfo = new DirectoryInfo(directory);
-                InitializeEngines(directoryInfo, options);
-            }
+            InitializeEngines(directories.Select(x=> new DirectoryInfo(x)), options);
 
             _progressStatus = ProgressStatusEnum.Initialized;
             return Task.CompletedTask;
@@ -62,12 +59,17 @@ namespace SongCompressor.MainManager
             };
         }
 
-        private void InitializeEngines(DirectoryInfo directory, IList<OptionsEnum> options)
+        private void InitializeEngines(IEnumerable<DirectoryInfo> directories, IList<OptionsEnum> options)
         {
-            var backupHandler = new BackupHandler(directory, options);
+            addEngine(ProvideFFmpegEngine.Create(options));
 
-            addEngine(PngToJpgEngine.Create(options, directory, backupHandler));
-            addEngine(AudioToOpusEngine.Create(options, directory, backupHandler));
+            foreach (var directory in directories)
+            {
+                var backupHandler = new BackupHandler(directory, options);
+
+                addEngine(PngToJpgEngine.Create(options, directory, backupHandler));
+                addEngine(AudioToOpusEngine.Create(options, directory, backupHandler));
+            }
 
             void addEngine(ICompressionEngine? x)
             {
