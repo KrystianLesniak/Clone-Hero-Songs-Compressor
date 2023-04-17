@@ -14,48 +14,32 @@ namespace SongCompressor.MainManager
 
         //Progress status
         private ICompressionEngine? _currentlyRunningEngine;
-        private ProgressStatusEnum _progressStatus = ProgressStatusEnum.Standby;
-        private int _enginesPercentageComplete;
 
         public Task Initialize(IList<string> directories, IList<OptionsEnum> options)
         {
-            _progressStatus = ProgressStatusEnum.Initializing;
+            InitializeEngines(directories.Select(x => new DirectoryInfo(x)), options);
 
-            InitializeEngines(directories.Select(x=> new DirectoryInfo(x)), options);
-
-            _progressStatus = ProgressStatusEnum.Initialized;
             return Task.CompletedTask;
         }
 
         public async Task Start()
         {
-            _progressStatus = ProgressStatusEnum.InProgress;
-            int index = 0;
-            foreach (var engine in Engines.OrderBy(x=>x.ExecutionOrder))
+            foreach (var engine in Engines.OrderBy(x => x.ExecutionOrder))
             {
                 _currentlyRunningEngine = engine;
-                _enginesPercentageComplete = (int)Math.Round((double)(100 * index) / Engines.Count);
-
                 await engine.Start();
 
-                index++;
+                await engine.Complete();
             }
-
-            _enginesPercentageComplete = 100;
-            _progressStatus = ProgressStatusEnum.Complete;
         }
 
         public async Task<OverallProgressStatus> GetCurrentProgressStatus()
         {
-            var engineProgess = _currentlyRunningEngine is null ? new EngineProgressStatus() : await _currentlyRunningEngine.GetCurrentProgress();
-
-            var enginePercentageForOverral = engineProgess.PercentageComplete * (1 / (double)Engines.Count);
-
             return new OverallProgressStatus
             {
-                Status = _progressStatus,
-                OverallPercentageComplete = _enginesPercentageComplete != 100 ? _enginesPercentageComplete + (int)enginePercentageForOverral : _enginesPercentageComplete,
-                EngineProgress = engineProgess
+                TotalEngines = Engines.Count,
+                EnginesFinished = Engines.Count(x => x.Completed),
+                EngineProgress = _currentlyRunningEngine is not null ? await _currentlyRunningEngine.GetCurrentProgress() : new EngineProgressStatus()
             };
         }
 

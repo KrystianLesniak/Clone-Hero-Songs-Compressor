@@ -10,15 +10,19 @@
     </MudCardHeader>
     <MudCardContent>
         <MudText>@_progressStatus.EngineProgress.WorkDescription</MudText>
-        <MudProgressLinear Striped="true" Color="Color.Secondary" Size="Size.Medium" Value="_progressStatus.EngineProgress.PercentageComplete" Class="my-7"></MudProgressLinear>
-        <MudProgressLinear Striped="true" Color="Color.Primary" Size="Size.Large" Value="_progressStatus.OverallPercentageComplete" Class="my-7">
+        <MudProgressLinear Striped="true" Color="Color.Secondary" Size="Size.Large" Value="_progressStatus.EngineProgress.PercentageComplete" Class="my-7">
             <MudText Typo="Typo.subtitle1" Color="Color.Dark">
-                <b>@_progressStatus.OverallPercentageComplete%</b>
+                <b>@_progressStatus.EngineProgress.PercentageComplete%</b>
+            </MudText>
+        </MudProgressLinear>
+        <MudProgressLinear Striped="true" Color="Color.Primary" Size="Size.Medium" Value="@( _progressStatus.TotalEngines > 0 ? (_progressStatus.EnginesFinished * 100 / _progressStatus.TotalEngines) : 0)" Class="my-7">
+            <MudText Typo="Typo.subtitle2" Color="Color.Dark">
+                <b>@_progressStatus.EnginesFinished / @_progressStatus.TotalEngines</b>
             </MudText>
         </MudProgressLinear>
     </MudCardContent>
 </MudCard>
-<MudCard hidden="@(_progressStatus.IsComplete())" Class="mt-4">
+<MudCard hidden="@(_progressStatus.AreAllEnginesComplete())" Class="mt-4">
     <MudCardContent>
         <MudText>
             Even if an application appears to be frozen, it may still be processing tasks in the background.
@@ -27,7 +31,7 @@
         </MudText>
     </MudCardContent>
 </MudCard>
-<MudCard hidden="@(!_progressStatus.IsComplete())" Class="mt-4">
+<MudCard hidden="@(!_progressStatus.AreAllEnginesComplete())" Class="mt-4">
     <MudCardContent>
         <div class="d-flex flex-grow-1 gap-4">
             <div class="flex-none d-flex align-center">
@@ -41,7 +45,7 @@
     </MudCardContent>
 </MudCard>
 
-<MudFab Disabled="@(!_progressStatus.IsComplete())" Class="mt-4" OnClick="() => Close()" Color="Color.Primary" StartIcon="@Icons.Material.Filled.Close" Label="Close" />
+<MudFab Disabled="@(!_progressStatus.AreAllEnginesComplete())" Class="mt-4" OnClick="() => Close()" Color="Color.Primary" StartIcon="@Icons.Material.Filled.Close" Label="Close" />
 
 @code {
     private OverallProgressStatus _progressStatus = new OverallProgressStatus();
@@ -62,7 +66,7 @@
     {
         var periodicTimer = new PeriodicTimer(TimeSpan.FromSeconds(4));
 
-        while (!_progressStatus.IsComplete() && await periodicTimer.WaitForNextTickAsync())
+        while (!_progressStatus.AreAllEnginesComplete() && await periodicTimer.WaitForNextTickAsync())
         {
             _progressStatus = await CompressionHandler.GetCurrentProgressStatus();
             StateHasChanged();
