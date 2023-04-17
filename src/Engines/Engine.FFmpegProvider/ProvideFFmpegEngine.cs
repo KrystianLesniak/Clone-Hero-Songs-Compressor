@@ -1,4 +1,5 @@
 ﻿using FFMpegCore;
+using SongsCompressor.Common.Base_Classes;
 using SongsCompressor.Common.Enums;
 using SongsCompressor.Common.Interfaces;
 using SongsCompressor.Common.Models;
@@ -8,9 +9,9 @@ namespace Engine.FFmpegProvider
 {
     //This engine may seem dull but in case of future this engine will be very important.
     //For things like providing FFmpeg paltform-wise or auto-downloading one
-    public class ProvideFFmpegEngine : ICompressionEngine
+    public class ProvideFFmpegEngine : BaseEngine
     {
-        public int ExecutionOrder => 10;
+        public override int ExecutionOrder => 10;
 
         public static ICompressionEngine? Create(IList<OptionsEnum> options)
         {
@@ -21,7 +22,7 @@ namespace Engine.FFmpegProvider
             return null;
         }
 
-        public Task<EngineProgressStatus> GetCurrentProgress()
+        public override Task<EngineProgressStatus> GetCurrentProgress()
         {
             return Task.FromResult(new EngineProgressStatus
             {
@@ -29,7 +30,7 @@ namespace Engine.FFmpegProvider
             });
         }
 
-        public Task Start()
+        public override Task Start()
         {
             var assemblyDirectory = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) ?? string.Empty;
 

@@ -7,8 +7,18 @@ namespace SongsCompressor.Common.Base_Classes
     {
         public virtual int ExecutionOrder => 100;
 
+        public bool Completed { get; set; }
+
+        public Task Complete()
+        {
+            Completed = true;
+            return Task.CompletedTask;
+        }
+
         public abstract Task<EngineProgressStatus> GetCurrentProgress();
 
         public abstract Task Start();
+
+
     }
 }
