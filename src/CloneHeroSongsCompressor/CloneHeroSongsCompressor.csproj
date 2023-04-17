@@ -34,25 +34,25 @@
 
     <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net7.0-maccatalyst|AnyCPU'">
       <ApplicationTitle>Clone Hero Songs Compressor</ApplicationTitle>
-      <ApplicationDisplayVersion>0.0.1</ApplicationDisplayVersion>
+      <ApplicationDisplayVersion>0.0.2</ApplicationDisplayVersion>
       <ApplicationId>com.krystianlesniak.cloneherosongscompressor</ApplicationId>
     </PropertyGroup>
 
     <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net7.0-maccatalyst|AnyCPU'">
       <ApplicationTitle>Clone Hero Songs Compressor</ApplicationTitle>
-      <ApplicationDisplayVersion>0.0.1</ApplicationDisplayVersion>
+      <ApplicationDisplayVersion>0.0.2</ApplicationDisplayVersion>
       <ApplicationId>com.krystianlesniak.cloneherosongscompressor</ApplicationId>
     </PropertyGroup>
 
     <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net7.0-windows10.0.22621.0|AnyCPU'">
       <ApplicationTitle>Clone Hero Songs Compressor</ApplicationTitle>
-      <ApplicationDisplayVersion>0.0.1</ApplicationDisplayVersion>
+      <ApplicationDisplayVersion>0.0.2</ApplicationDisplayVersion>
       <ApplicationId>com.krystianlesniak.cloneherosongscompressor</ApplicationId>
     </PropertyGroup>
 
     <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net7.0-windows10.0.22621.0|AnyCPU'">
       <ApplicationTitle>Clone Hero Songs Compressor</ApplicationTitle>
-      <ApplicationDisplayVersion>0.0.1</ApplicationDisplayVersion>
+      <ApplicationDisplayVersion>0.0.2</ApplicationDisplayVersion>
       <ApplicationId>com.krystianlesniak.cloneherosongscompressor</ApplicationId>
     </PropertyGroup>
 
