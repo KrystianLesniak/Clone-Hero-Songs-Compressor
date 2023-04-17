@@ -14,7 +14,8 @@ namespace Engine.FFmpegProvider
 
         public static ICompressionEngine? Create(IList<OptionsEnum> options)
         {
-            if (options.Contains(OptionsEnum.ConvertAudioToOpus))
+            if (options.Contains(OptionsEnum.ConvertAudioToOpus) ||
+                options.Contains(OptionsEnum.ConvertPngToJpg))
                 return new ProvideFFmpegEngine();
 
             return null;

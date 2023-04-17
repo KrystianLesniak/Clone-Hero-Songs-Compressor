@@ -1,8 +1,9 @@
-﻿using ImageMagick;
+﻿using FFMpegCore;
 using SongsCompressor.Common.Base_Classes;
 using SongsCompressor.Common.Enums;
 using SongsCompressor.Common.Interfaces;
 using SongsCompressor.Common.Models;
+using System.Drawing;
 
 namespace Engine.ImagePngToJpgConverter
 {
@@ -71,15 +72,18 @@ namespace Engine.ImagePngToJpgConverter
         {
             await backupHandler.BackupFile(pngFileInfo);
 
-            using (var image = new MagickImage(pngFileInfo.FullName))
+            var outputPath = Path.ChangeExtension(pngFileInfo.FullName, ".jpg");
+
+            await FFMpegArguments
+                .FromFileInput(pngFileInfo)
+                .OutputToFile(outputPath, true, GetImageOptions)
+            .ProcessAsynchronously();
+
+            void GetImageOptions(FFMpegArgumentOptions options)
             {
-                image.Format = MagickFormat.Jpeg;
-                image.Quality = 80;
-
-                if (pngFileInfo.Name == _albumFileName) //Resize albums cover to 500px
-                    image.Resize(500, 0);
-
-                await image.WriteAsync(Path.ChangeExtension(pngFileInfo.FullName, ".jpg"));
+                //if album.png scale to 500px
+                if (pngFileInfo.Name.Equals(_albumFileName, StringComparison.OrdinalIgnoreCase))
+                    options.WithVideoFilters(x => x.Scale(new Size(500, -1)));
             }
 
             pngFileInfo.Delete();
