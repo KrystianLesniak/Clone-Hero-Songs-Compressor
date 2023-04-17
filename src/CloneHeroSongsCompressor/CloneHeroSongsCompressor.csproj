@@ -62,7 +62,7 @@
 
         <!-- Splash Screen -->
 		<!-- TODO: Add better splash screen :P -->
-        <!-- <MauiSplashScreen Include="Resources\AppIcon\appicon.png" /> -->
+        <MauiSplashScreen Include="Resources\AppIcon\appicon.png" />
 
         <!-- Images -->
         <MauiImage Include="Resources\Images\*" />
@@ -86,6 +86,7 @@
 
     <ItemGroup>
       <Folder Include="Resources\Images\" />
+      <Folder Include="Resources\Raw\" />
       <Folder Include="Resources\Splash\" />
     </ItemGroup>
 

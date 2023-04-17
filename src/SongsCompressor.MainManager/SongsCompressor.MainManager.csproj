@@ -7,8 +7,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Engines\SongsCompressor.AudioToOpusConverter\SongsCompressor.AudioToOpusConverter.csproj" />
-    <ProjectReference Include="..\Engines\SongsCompressor.ImagePngToJpgConverter\SongsCompressor.ImagePngToJpgConverter.csproj" />
+    <ProjectReference Include="..\Engines\Engine.AudioToOpusConverter\Engine.AudioToOpusConverter.csproj" />
+    <ProjectReference Include="..\Engines\Engine.ImagePngToJpgConverter\Engine.ImagePngToJpgConverter.csproj" />
     <ProjectReference Include="..\SongsCompressor.Common\SongsCompressor.Common.csproj" />
   </ItemGroup>
 
