@@ -90,4 +90,12 @@
       <Folder Include="Resources\Splash\" />
     </ItemGroup>
 
+    <ItemGroup>
+      <MauiImage Include="wwwroot\images\logo_transparent.png" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Include="wwwroot\images\logo_transparent.png" />
+    </ItemGroup>
+
 </Project>

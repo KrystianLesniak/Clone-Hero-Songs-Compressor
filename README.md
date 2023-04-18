@@ -1,5 +1,4 @@
-# Clone Hero Songs Compressor
-
+![Application logo](src/CloneHeroSongsCompressor/Resources/AppIcon/appicon.png?raw=true)
 Clone Hero Songs Compressor is a tool that significantly reduces the size of your Clone Hero songs library (by approximately 45%).<br>
 
 ![Application screenshoot](docs/img/app-screenshoot-darkmode.png?raw=true)
