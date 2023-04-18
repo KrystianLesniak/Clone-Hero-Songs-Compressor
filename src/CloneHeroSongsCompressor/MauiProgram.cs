@@ -20,16 +20,10 @@ public static class MauiProgram
         builder.Services.AddMauiBlazorWebView();
         builder.Services.AddMudServices();
 
-        if (System.Diagnostics.Debugger.IsAttached)
-        {
-            builder.Services.AddBlazorWebViewDeveloperTools();
-            builder.Logging.AddDebug();
-        }
-        //TODO: can be uncommented once possible to normally publish app with release tag
-        //#if DEBUG
-        //      builder.Services.AddBlazorWebViewDeveloperTools();
-        //		builder.Logging.AddDebug();
-        //#endif
+        #if DEBUG
+        builder.Services.AddBlazorWebViewDeveloperTools();
+        builder.Logging.AddDebug();
+        #endif
 
 #if WINDOWS
         builder.Services.AddTransient<IFolderPicker, CloneHeroSongsCompressor.Platforms.Windows.Services.FolderPicker>();
