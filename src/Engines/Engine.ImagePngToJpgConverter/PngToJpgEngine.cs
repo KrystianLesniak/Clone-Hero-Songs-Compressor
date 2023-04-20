@@ -12,12 +12,10 @@ namespace Engine.ImagePngToJpgConverter
         private readonly DirectoryInfo directoryInfo;
         private readonly IBackupHandler backupHandler;
 
-        private readonly HashSet<Task> _convertingTasks = new();
         private readonly string _albumFileName = "album.png";
 
         //Progress Description
-        private string _currentWorkDescription = "Starting conversion of images from PNG to JPG format";
-        private int _percentageComplete;
+        private readonly EngineProgressStatus _progress = new() { WorkDescription = "Starting conversion of images from PNG to JPG format" };
 
         private PngToJpgEngine(DirectoryInfo directoryInfo, IBackupHandler backupHandler)
         {
@@ -35,37 +33,33 @@ namespace Engine.ImagePngToJpgConverter
 
         public override Task<EngineProgressStatus> GetCurrentProgress()
         {
-            return Task.FromResult(
-                new EngineProgressStatus
-                {
-                    WorkDescription = _currentWorkDescription,
-                    PercentageComplete = _percentageComplete
-                });
+            return Task.FromResult(_progress);
         }
 
         public override async Task Start()
         {
+            var convertingTasks = new HashSet<Task>();
             var pngs = directoryInfo.GetFiles("*.png", SearchOption.AllDirectories);
-            var pngsCount = pngs.Length;
 
             int index = 0;
             foreach (var pngFile in pngs)
             {
-                _convertingTasks.Add(ConvertPngToJpg(pngFile));
-                _currentWorkDescription = $"Converting file {pngFile.Directory?.Name}\\{pngFile.Name} into JPEG format";
+                convertingTasks.Add(ConvertPngToJpg(pngFile));
                 index++;
 
                 if (index % (Environment.ProcessorCount / 2) == 0)
                 {
-                    await Task.WhenAll(_convertingTasks);
-                    _percentageComplete = (int)Math.Round((double)(100 * index) / pngsCount);
+                    _progress.WorkDescription = $"Converting file {pngFile.Directory?.Name}\\{pngFile.Name} into JPEG format";
+                    _progress.PercentageComplete = (int)Math.Round((double)(100 * index) / pngs.Length);
+
+                    await Task.WhenAll(convertingTasks);
                 }
             }
 
-            await Task.WhenAll(_convertingTasks);
+            await Task.WhenAll(convertingTasks);
 
-            _percentageComplete = 100;
-            _currentWorkDescription = "Compressing images from PNG to JPEG format finished";
+            _progress.PercentageComplete = 100;
+            _progress.WorkDescription = "Compressing images from PNG to JPEG format finished";
         }
 
         private async Task ConvertPngToJpg(FileInfo pngFileInfo)

@@ -45,14 +45,14 @@ namespace Engine.AudioToOpusConverter
             foreach (var audioFile in audioFiles)
             {
                 convertingTasks.Add(ConvertAudioToOpus(audioFile));
-
-                _progress.WorkDescription = $"Converting file {audioFile.Directory?.Name}\\{audioFile.Name} into Opus format";
                 index++;
 
                 if (index % Environment.ProcessorCount == 0)
                 {
-                    await Task.WhenAll(convertingTasks);
+                    _progress.WorkDescription = $"Converting file {audioFile.Directory?.Name}\\{audioFile.Name} into Opus format";
                     _progress.PercentageComplete = (int)Math.Round((double)(100 * index) / audioFiles.Count);
+
+                    await Task.WhenAll(convertingTasks);
                 }
             }
 
