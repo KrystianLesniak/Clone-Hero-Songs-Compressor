@@ -1,0 +1,27 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Razor">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net7.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <UseWindowsForms>true</UseWindowsForms>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Components.WebView.WindowsForms" Version="7.0.81" />
+    <PackageReference Include="MudBlazor" Version="6.2.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\SongsCompressor.Common\SongsCompressor.Common.csproj" />
+    <ProjectReference Include="..\SongsCompressor.MainManager\SongsCompressor.MainManager.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Services\FolderPicker.cs">
+      <ExcludeFromCurrentConfiguration>false</ExcludeFromCurrentConfiguration>
+    </Compile>
+  </ItemGroup>
+
+</Project>
