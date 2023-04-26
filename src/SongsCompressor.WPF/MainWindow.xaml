@@ -6,7 +6,8 @@
         xmlns:blazor="clr-namespace:Microsoft.AspNetCore.Components.WebView.Wpf;assembly=Microsoft.AspNetCore.Components.WebView.Wpf"
         xmlns:local="clr-namespace:SongsCompressor.WPF"
         mc:Ignorable="d"
-        Title="Clone Hero Songs Compressor" Width="800" Height="900">
+        ResizeMode="CanMinimize"
+        Title="Clone Hero Songs Compressor" Width="800" Height="900" Icon="/Shared/appicon.png">
     <Grid>
         <blazor:BlazorWebView HostPage="wwwroot\index.html" Services="{DynamicResource services}">
             <blazor:BlazorWebView.RootComponents>
