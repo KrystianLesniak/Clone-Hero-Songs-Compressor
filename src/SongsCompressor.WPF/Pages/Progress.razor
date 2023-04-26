@@ -64,7 +64,7 @@
 
     private async Task CheckForStatus(Task compressionStartTask)
     {
-        var periodicTimer = new PeriodicTimer(TimeSpan.FromSeconds(4));
+        var periodicTimer = new System.Threading.PeriodicTimer(TimeSpan.FromSeconds(4));
 
         while (!_progressStatus.AreAllEnginesComplete() && await periodicTimer.WaitForNextTickAsync())
         {
