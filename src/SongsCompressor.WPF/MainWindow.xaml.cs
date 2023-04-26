@@ -1,21 +1,28 @@
-using Microsoft.AspNetCore.Components.WebView.WindowsForms;
+﻿using System.Windows;
+using Microsoft.AspNetCore.Components.WebView.Wpf;
 using Microsoft.Extensions.DependencyInjection;
-using MudBlazor.Services;
 using SongCompressor.MainManager;
 using SongsCompressor.Common.Interfaces.Services;
 using SongsCompressor.Common.Interfaces;
 using SongsCompressor.Services.Services;
-using System.Diagnostics.Metrics;
+using MudBlazor.Services;
 
-namespace SongsCompressor.WinForms
+namespace SongsCompressor.WPF
 {
-    public partial class Form1 : Form
+    /// <summary>
+    /// Interaction logic for MainWindow.xaml
+    /// </summary>
+    public partial class MainWindow : Window
     {
-        public Form1()
+        public MainWindow()
         {
             InitializeComponent();
+
             var services = new ServiceCollection();
-            services.AddWindowsFormsBlazorWebView();
+            services.AddWpfBlazorWebView();
+#if DEBUG
+            services.AddBlazorWebViewDeveloperTools();
+#endif
 
             services.AddMudServices();
 
@@ -23,14 +30,7 @@ namespace SongsCompressor.WinForms
             services.AddScoped<ISettingsStorage, SettingsStorage>();
             services.AddSingleton<ICompressionManager, CompressionManager>();
 
-            blazorWebView1.HostPage = "wwwroot/index.html";
-            blazorWebView1.Services = services.BuildServiceProvider();
-            blazorWebView1.RootComponents.Add<Main>("#app");
-        }
-
-        private void Form1_Load(object sender, EventArgs e)
-        {
-
+            Resources.Add("services", services.BuildServiceProvider());
         }
     }
 }

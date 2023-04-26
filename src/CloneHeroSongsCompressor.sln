@@ -18,7 +18,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Engine.FFmpegProvider", "En
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SongsCompressor.Services", "SongsCompressor.Services\SongsCompressor.Services.csproj", "{E7F00390-5070-4F4E-B00A-265457A90744}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SongsCompressor.WinForms", "SongsCompressor.WinForms\SongsCompressor.WinForms.csproj", "{D9DB0A3C-859A-40AC-98DF-1137184FB57F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SongsCompressor.WPF", "SongsCompressor.WPF\SongsCompressor.WPF.csproj", "{D76941BE-50F3-41E9-A80F-C84CE11512FA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -88,14 +88,14 @@ Global
 		{E7F00390-5070-4F4E-B00A-265457A90744}.Release|Any CPU.Build.0 = Release|Any CPU
 		{E7F00390-5070-4F4E-B00A-265457A90744}.Release|x64.ActiveCfg = Release|Any CPU
 		{E7F00390-5070-4F4E-B00A-265457A90744}.Release|x64.Build.0 = Release|Any CPU
-		{D9DB0A3C-859A-40AC-98DF-1137184FB57F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{D9DB0A3C-859A-40AC-98DF-1137184FB57F}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{D9DB0A3C-859A-40AC-98DF-1137184FB57F}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{D9DB0A3C-859A-40AC-98DF-1137184FB57F}.Debug|x64.Build.0 = Debug|Any CPU
-		{D9DB0A3C-859A-40AC-98DF-1137184FB57F}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{D9DB0A3C-859A-40AC-98DF-1137184FB57F}.Release|Any CPU.Build.0 = Release|Any CPU
-		{D9DB0A3C-859A-40AC-98DF-1137184FB57F}.Release|x64.ActiveCfg = Release|Any CPU
-		{D9DB0A3C-859A-40AC-98DF-1137184FB57F}.Release|x64.Build.0 = Release|Any CPU
+		{D76941BE-50F3-41E9-A80F-C84CE11512FA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D76941BE-50F3-41E9-A80F-C84CE11512FA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D76941BE-50F3-41E9-A80F-C84CE11512FA}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{D76941BE-50F3-41E9-A80F-C84CE11512FA}.Debug|x64.Build.0 = Debug|Any CPU
+		{D76941BE-50F3-41E9-A80F-C84CE11512FA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D76941BE-50F3-41E9-A80F-C84CE11512FA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D76941BE-50F3-41E9-A80F-C84CE11512FA}.Release|x64.ActiveCfg = Release|Any CPU
+		{D76941BE-50F3-41E9-A80F-C84CE11512FA}.Release|x64.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
