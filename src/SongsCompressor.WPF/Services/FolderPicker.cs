@@ -15,7 +15,7 @@ namespace SongsCompressor.WPF.Services
             VistaFolderBrowserDialog dlg = new()
             {
 #if RELEASE
-            dlg.SelectedPath = defaultFolder;
+                SelectedPath = defaultFolder,
 #endif
                 ShowNewFolderButton = true,
                 Multiselect = true
