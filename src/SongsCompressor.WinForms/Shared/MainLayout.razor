@@ -1,0 +1,43 @@
+﻿@inherits LayoutComponentBase
+@inject IJSRuntime jsRuntime
+
+<MudThemeProvider @ref="@_mudThemeProvider" @bind-IsDarkMode="@_isDarkMode" />
+<MudDialogProvider/>
+<MudSnackbarProvider/>
+
+<MudLayout>
+    <MudAppBar Color="Color.Transparent" Elevation="1">
+        <MudImage Src="images/logo_transparent.png" Alt="Logo" />
+        <MudSpacer />
+        <MudToggleIconButton @bind-Toggled="@_isDarkMode"
+                             Icon="@Icons.Material.Filled.LightMode" Color="Color.Inherit" Title="Light Mode"
+                             ToggledIcon="@Icons.Material.Filled.DarkMode" ToggledTitle="Dark Mode" />
+        <MudIconButton Icon="@Icons.Material.Filled.QuestionMark" Color="Color.Inherit" Edge="Edge.End" OnClick="@((e) => NavigateToGitHub())" />
+    </MudAppBar>
+    <MudMainContent>
+        <MudContainer MaxWidth="MaxWidth.Medium">
+            @Body
+        </MudContainer>
+    </MudMainContent>
+</MudLayout>
+
+
+@code {
+    private MudThemeProvider _mudThemeProvider;
+    private bool _isDarkMode;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            _isDarkMode = await _mudThemeProvider.GetSystemPreference();
+            StateHasChanged();
+        }
+    }
+
+    private async Task NavigateToGitHub()
+    {
+        string url = "https://github.com/KrystianLesniak/Clone-Hero-Songs-Compressor";
+        await jsRuntime.InvokeAsync<object>("open", url, "_blank");
+    }
+}

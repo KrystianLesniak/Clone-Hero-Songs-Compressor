@@ -19,6 +19,12 @@ namespace CloneHeroSongsCompressor.Platforms.Windows.Services
 
             var result = await folderPicker.PickSingleFolderAsync();
 
+            if(result?.Path is null)
+                return null;
+
+            if (!Directory.Exists(result?.Path))
+                throw new DirectoryNotFoundException($"Directory not found: {result?.Path}");
+
             return result?.Path;
         }
     }

@@ -3,6 +3,7 @@ using Engine.FFmpegProvider;
 using Engine.ImagePngToJpgConverter;
 using SongsCompressor.Common.Enums;
 using SongsCompressor.Common.Interfaces;
+using SongsCompressor.Common.Interfaces.Services;
 using SongsCompressor.Common.Models;
 using SongsCompressor.Common.Services;
 
@@ -14,12 +15,18 @@ namespace SongCompressor.MainManager
 
         //Progress status
         private ICompressionEngine? _currentlyRunningEngine;
+        private readonly ISettingsStorage settingsStorage;
 
-        public Task Initialize(IList<string> directories, IList<OptionsEnum> options)
+        public CompressionManager(ISettingsStorage settingsStorage)
         {
-            InitializeEngines(directories.Select(x => new DirectoryInfo(x)), options);
+            this.settingsStorage = settingsStorage;
+        }
 
-            return Task.CompletedTask;
+        public async Task Initialize(UserSettings settings)
+        {
+            await settingsStorage.SaveSettings(settings);
+
+            InitializeEngines(settings.Directories, settings.Options);
         }
 
         public async Task Start()
