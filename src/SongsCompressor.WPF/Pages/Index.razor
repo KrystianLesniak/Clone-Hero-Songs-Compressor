@@ -33,7 +33,7 @@
         Variant="Variant.Filled"
         Color="Color.Primary"
         StartIcon="@Icons.Material.Filled.DriveFolderUpload"
-        OnClick="() => PickFolder()"> Add new directory</MudButton>
+        OnClick="() => PickFolders()"> Add new directory</MudButton>
     </MudCardContent>
 </MudCard>
 
@@ -71,7 +71,7 @@
         Settings = await SettingsStorage.GetSettings();
     }
 
-    private void PickFolder()
+    private void PickFolders()
     {
         var paths = FolderPicker.PickFolders();
 
