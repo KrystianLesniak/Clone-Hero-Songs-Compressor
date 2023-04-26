@@ -71,12 +71,15 @@
         Settings = await SettingsStorage.GetSettings();
     }
 
-    private async Task PickFolder()
+    private void PickFolder()
     {
-        var path = await FolderPicker.PickFolder();
+        var paths = FolderPicker.PickFolders();
 
-        if (!string.IsNullOrWhiteSpace(path) && !Settings.Directories.Any(x=>x.FullName == path))
-            Settings.Directories.Add(new DirectoryInfo(path));
+        foreach(var path in paths)
+        {
+            if (!string.IsNullOrWhiteSpace(path) && !Settings.Directories.Any(x => x.FullName == path))
+                Settings.Directories.Add(new DirectoryInfo(path));
+        }
     }
 
     private void RemoveFolder(DirectoryInfo directory)
