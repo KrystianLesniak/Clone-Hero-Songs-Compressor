@@ -2,6 +2,6 @@
 {
     public interface IFolderPicker
     {
-        Task<string> PickFolder();
+        string[] PickFolders();
     }
 }
