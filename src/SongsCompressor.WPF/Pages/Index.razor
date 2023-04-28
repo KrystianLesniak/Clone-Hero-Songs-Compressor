@@ -9,7 +9,22 @@
 @inject ICompressionManager CompressionHandler
 @inject ISettingsStorage SettingsStorage;
 
-<MudCard Class="mt-4">
+
+<MudCard hidden="@(errors.Count == 0)" Class="mt-4">
+    <MudCardHeader>
+        <CardHeaderContent>
+            <MudText Typo="Typo.h4">Errors</MudText>
+        </CardHeaderContent>
+    </MudCardHeader>
+    <MudCardContent>
+        @foreach (var error in errors)
+        {
+            <MudText Class="mb-2" Color="Color.Error">@error</MudText>
+        }
+    </MudCardContent>
+</MudCard>
+
+<MudCard Class="mt-4 mb-4">
     <MudCardHeader>
         <CardHeaderContent>
             <MudText Typo="Typo.h4">Song Directories</MudText>
@@ -61,16 +76,17 @@
     </MudCardActions>
 </MudCard>
 
-<MudFab OnClick="() => Start()" Disabled="Settings.Options.Count == 0 || Settings.Directories.Count == 0 || _loading" Color="Color.Primary" StartIcon="@Icons.Material.Filled.Start" Label="Start" />
+<MudFab OnClick="() => Start()" Disabled="Settings.Options.Count == 0 || Settings.Directories.Count == 0 || _loading" Color="Color.Primary" Class="mb-4" StartIcon="@Icons.Material.Filled.Start" Label="Start" />
 
 
 @code
 {
-#pragma warning disable CS8618 // No constrcutor, it's initialized in OnParameterSet
+    #pragma warning disable CS8618 // No constrcutor, it's initialized in OnParameterSet
     private UserSettings Settings;
 #pragma warning disable CS8618
 
     private bool _loading = false;
+    List<string> errors = new();
 
     protected override async Task OnParametersSetAsync()
     {
@@ -96,8 +112,26 @@
     private async Task Start()
     {
         _loading = true;
-        await CompressionHandler.Initialize(Settings);
-        Navigation.NavigateTo("progress");
+
+        if(AreDirectoriesValid())
+        {
+            await CompressionHandler.Initialize(Settings);
+            Navigation.NavigateTo("progress");
+        }
+
+        _loading = false;
+    }
+
+    private bool AreDirectoriesValid()
+    {
+        errors = new();
+        foreach(var directory in Settings.Directories)
+        {
+            if (!Directory.Exists(directory))
+                errors.Add($"Directory {directory} does not exist");
+        }
+
+        return errors.Count == 0;
     }
 
     private class OptionsEnumConverter : BoolConverter<bool>
