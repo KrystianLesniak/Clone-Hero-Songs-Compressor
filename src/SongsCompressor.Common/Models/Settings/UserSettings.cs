@@ -15,10 +15,10 @@ namespace SongsCompressor.Common.Models
                 OptionsEnum.ConvertAudioFromMp3,
                 OptionsEnum.ConvertAudioFromOgg
             };
-            Directories = new List<DirectoryInfo>();
+            Directories = new List<string>();
         }
 
         public IList<OptionsEnum> Options { get; set; }
-        public IList<DirectoryInfo> Directories { get; set; }
+        public IList<string> Directories { get; set; }
     }
 }
