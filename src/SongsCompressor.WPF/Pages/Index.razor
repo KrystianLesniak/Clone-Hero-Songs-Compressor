@@ -55,6 +55,9 @@
 
         <MudSwitch Class="mt-3" Converter="@(new OptionsEnumConverter(OptionsEnum.CreateBackup, Settings.Options))" Color="Color.Warning" CheckedChanged="(bool e) => StateHasChanged()">Create backup</MudSwitch>
     </MudCardContent>
+    <MudCardActions>
+        <MudButton OnClick="() => Settings.Options = new UserSettings().Options" Variant="Variant.Text" Color="Color.Primary">Reset to default</MudButton>
+    </MudCardActions>
 </MudCard>
 
 <MudFab OnClick="() => Start()" Disabled="Settings.Options.Count == 0 || Settings.Directories.Count == 0 || _loading" Color="Color.Primary" StartIcon="@Icons.Material.Filled.Start" Label="Start" />
@@ -62,7 +65,9 @@
 
 @code
 {
+#pragma warning disable CS8618 // No constrcutor, it's initialized in OnParameterSet
     private UserSettings Settings;
+#pragma warning disable CS8618
 
     private bool _loading = false;
 
