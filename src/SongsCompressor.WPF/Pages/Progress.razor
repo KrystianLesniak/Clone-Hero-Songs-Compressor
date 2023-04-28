@@ -48,9 +48,10 @@
 <MudFab Disabled="@(!_progressStatus.AllEnginesComplete)" Class="mt-4" OnClick="() => Close()" Color="Color.Primary" StartIcon="@Icons.Material.Filled.Close" Label="Close" />
 
 @code {
-    private OverallProgressStatus _progressStatus = new();
-
-    private Task? CheckingStatusTask;
+#pragma warning disable CS8618 // No constrcutor, it's initialized in OnParameterSet
+    private OverallProgressStatus _progressStatus;
+    private Task CheckingStatusTask;
+#pragma warning restore CS8618
 
     protected override async Task OnParametersSetAsync()
     {
@@ -76,7 +77,7 @@
 
     private async Task Close()
     {
-        await (CheckingStatusTask ?? Task.CompletedTask);
+        await CheckingStatusTask;
         Environment.Exit(0);
     }
 }
