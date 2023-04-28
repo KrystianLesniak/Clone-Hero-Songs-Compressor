@@ -21,9 +21,9 @@
         <MudList>
         @foreach (var directory in Settings.Directories)
         {
-            <MudListItem @key="@directory.FullName">
+            <MudListItem @key="@directory">
                 <MudText Class="d-flex justify-space-between flex-grow-1 gap-4">
-                      <MudText Class="align-self-center">@directory.FullName</MudText> <MudIconButton OnClick="() => RemoveFolder(directory)" Icon="@Icons.Material.Filled.Delete" aria-label="delete"></MudIconButton>
+                      <MudText Class="align-self-center">@directory</MudText> <MudIconButton OnClick="() => RemoveFolder(directory)" Icon="@Icons.Material.Filled.Delete" aria-label="delete"></MudIconButton>
                 </MudText>              
             </MudListItem>
         }
@@ -77,12 +77,12 @@
 
         foreach(var path in paths)
         {
-            if (!string.IsNullOrWhiteSpace(path) && !Settings.Directories.Any(x => x.FullName == path))
-                Settings.Directories.Add(new DirectoryInfo(path));
+            if (!string.IsNullOrWhiteSpace(path) && !Settings.Directories.Contains(path))
+                Settings.Directories.Add(path);
         }
     }
 
-    private void RemoveFolder(DirectoryInfo directory)
+    private void RemoveFolder(string directory)
     {
         Settings.Directories.Remove(directory);
     }

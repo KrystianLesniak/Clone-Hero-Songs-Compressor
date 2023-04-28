@@ -14,7 +14,9 @@ namespace SongCompressor.MainManager
         public IList<ICompressionEngine> Engines { get; set; } = new List<ICompressionEngine>();
 
         //Progress status
-        private ICompressionEngine? _currentlyRunningEngine;
+        private ICompressionEngine? currentlyRunningEngine;
+        private readonly OverallProgressStatus progress = new();
+
         private readonly ISettingsStorage settingsStorage;
 
         public CompressionManager(ISettingsStorage settingsStorage)
@@ -33,34 +35,37 @@ namespace SongCompressor.MainManager
         {
             foreach (var engine in Engines.OrderBy(x => x.ExecutionOrder))
             {
-                _currentlyRunningEngine = engine;
+                currentlyRunningEngine = engine;
                 await engine.Start();
-
                 await engine.Complete();
+
+                progress.EnginesFinished = Engines.Count(x => x.Completed);
             }
         }
 
         public async Task<OverallProgressStatus> GetCurrentProgressStatus()
         {
-            return new OverallProgressStatus
-            {
-                TotalEngines = Engines.Count,
-                EnginesFinished = Engines.Count(x => x.Completed),
-                EngineProgress = _currentlyRunningEngine is not null ? await _currentlyRunningEngine.GetCurrentProgress() : new EngineProgressStatus()
-            };
+            var engineProgress = currentlyRunningEngine is not null ? await currentlyRunningEngine.GetCurrentProgress() : new EngineProgressStatus();
+            progress.UpdateProgress(engineProgress);
+
+            return progress;
         }
 
-        private void InitializeEngines(IEnumerable<DirectoryInfo> directories, IList<OptionsEnum> options)
+        private void InitializeEngines(IEnumerable<string> directories, IList<OptionsEnum> options)
         {
             addEngine(ProvideFFmpegEngine.Create(options));
 
             foreach (var directory in directories)
             {
-                var backupHandler = new BackupHandler(directory, options);
+                var directoryInfo = new DirectoryInfo(directory);
 
-                addEngine(PngToJpgEngine.Create(options, directory, backupHandler));
-                addEngine(AudioToOpusEngine.Create(options, directory, backupHandler));
+                var backupHandler = new BackupHandler(directoryInfo, options);
+
+                addEngine(PngToJpgEngine.Create(options, directoryInfo, backupHandler));
+                addEngine(AudioToOpusEngine.Create(options, directoryInfo, backupHandler));
             }
+
+            progress.TotalEngines = Engines.Count;
 
             void addEngine(ICompressionEngine? x)
             {

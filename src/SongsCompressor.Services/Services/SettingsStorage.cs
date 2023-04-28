@@ -1,31 +1,34 @@
-﻿using SongsCompressor.Common.Interfaces.Services;
+﻿using LiteDB;
+using SongsCompressor.Common.Interfaces.Services;
 using SongsCompressor.Common.Models;
-using System.Text.Json;
 
 namespace SongsCompressor.Services.Services
 {
     public class SettingsStorage : ISettingsStorage
     {
-        //private readonly string _jsonPath = Path.Combine(FileSystem.Current.AppDataDirectory, "UserSettings.json");
-        private readonly string _jsonPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "Clone Hero Songs Compressor", "UserSettings.json");
+        private readonly string _dbPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "Clone Hero Songs Compressor", "UserSettings.db");
 
         public SettingsStorage()
         {
-            Directory.CreateDirectory(Path.GetDirectoryName(_jsonPath) ?? string.Empty);
+            var path = Path.GetDirectoryName(_dbPath);
+            Directory.CreateDirectory(path);
         }
 
-        public async Task<UserSettings> GetSettings()
+        public Task<UserSettings> GetSettings()
         {
-            if (!File.Exists(_jsonPath))
-            {
-                return new();
-            }
+            using var db = new LiteDatabase(_dbPath);
+            var col = db.GetCollection<UserSettings>(typeof(UserSettings).Name);
 
-            return new UserSettings();
+            return Task.FromResult(col.FindOne(Query.All()) ?? new());
         }
 
         public Task SaveSettings(UserSettings settings)
         {
+            using var db = new LiteDatabase(_dbPath);
+            var col = db.GetCollection<UserSettings>(typeof(UserSettings).Name);
+
+            col.DeleteAll();
+            col.Insert(settings);
             return Task.CompletedTask;
         }
 
