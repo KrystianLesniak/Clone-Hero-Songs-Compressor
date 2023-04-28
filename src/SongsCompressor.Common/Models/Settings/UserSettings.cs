@@ -11,6 +11,7 @@ namespace SongsCompressor.Common.Models
             {
                 //Put default options here
                 OptionsEnum.ConvertPngToJpg,
+                OptionsEnum.ResizeAlbum,
                 OptionsEnum.ConvertAudioToOpus,
                 OptionsEnum.ConvertAudioFromMp3,
                 OptionsEnum.ConvertAudioFromOgg

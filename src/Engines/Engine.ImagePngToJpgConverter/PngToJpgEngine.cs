@@ -11,28 +11,34 @@ namespace Engine.ImagePngToJpgConverter
     {
         private readonly DirectoryInfo directoryInfo;
         private readonly IBackupHandler backupHandler;
+        private readonly IEnumerable<OptionsEnum> options;
 
         private readonly string _albumFileName = "album.png";
 
         //Progress Description
         private readonly EngineProgressStatus _progress = new() { WorkDescription = "Starting conversion of images from PNG to JPG format" };
+        private int pngFilesCount;
+        private int pngFilesConvertedCount;
 
-        private PngToJpgEngine(DirectoryInfo directoryInfo, IBackupHandler backupHandler)
+        private PngToJpgEngine(DirectoryInfo directoryInfo, IEnumerable<OptionsEnum> options, IBackupHandler backupHandler)
         {
             this.directoryInfo = directoryInfo ?? throw new ArgumentNullException(nameof(directoryInfo));
+            this.options = options ?? throw new ArgumentNullException(nameof(options));
             this.backupHandler = backupHandler ?? throw new ArgumentNullException(nameof(backupHandler));
         }
 
         public static ICompressionEngine? Create(IList<OptionsEnum> options, DirectoryInfo directoryInfo, IBackupHandler backupHandler)
         {
             if (options.Contains(OptionsEnum.ConvertPngToJpg))
-                return new PngToJpgEngine(directoryInfo, backupHandler);
+                return new PngToJpgEngine(directoryInfo, options, backupHandler);
 
             return null;
         }
 
         public override Task<EngineProgressStatus> GetCurrentProgress()
         {
+            _progress.PercentageComplete = (int)Math.Round(100 * pngFilesConvertedCount / (pngFilesCount == 0 ? 1.0 : pngFilesCount));
+
             return Task.FromResult(_progress);
         }
 
@@ -40,25 +46,17 @@ namespace Engine.ImagePngToJpgConverter
         {
             var convertingTasks = new HashSet<Task>();
             var pngs = directoryInfo.GetFiles("*.png", SearchOption.AllDirectories);
+            pngFilesCount = pngs.Length;
 
-            int index = 0;
-            foreach (var pngFile in pngs)
+            await Parallel.ForEachAsync(pngs, async (pngFile, ct) =>
             {
-                convertingTasks.Add(ConvertPngToJpg(pngFile));
-                index++;
+                _progress.WorkDescription = $"Converting file {pngFile.Directory?.Name}\\{pngFile.Name} into JPEG format";
 
-                if (index % (Environment.ProcessorCount / 2) == 0)
-                {
-                    _progress.WorkDescription = $"Converting file {pngFile.Directory?.Name}\\{pngFile.Name} into JPEG format";
-                    _progress.PercentageComplete = (int)Math.Round((double)(100 * index) / pngs.Length);
+                await ConvertPngToJpg(pngFile);
 
-                    await Task.WhenAll(convertingTasks);
-                }
-            }
+                pngFilesConvertedCount++;
+            });
 
-            await Task.WhenAll(convertingTasks);
-
-            _progress.PercentageComplete = 100;
             _progress.WorkDescription = "Compressing images from PNG to JPEG format finished";
         }
 
@@ -73,11 +71,14 @@ namespace Engine.ImagePngToJpgConverter
                 .OutputToFile(outputPath, true, GetImageOptions)
             .ProcessAsynchronously();
 
-            void GetImageOptions(FFMpegArgumentOptions options)
+            void GetImageOptions(FFMpegArgumentOptions ffmpegOptions)
             {
                 //if album.png scale to 500px
-                if (pngFileInfo.Name.Equals(_albumFileName, StringComparison.OrdinalIgnoreCase))
-                    options.WithVideoFilters(x => x.Scale(new Size(500, -1)));
+                if (options.Contains(OptionsEnum.ResizeAlbum) &&
+                    pngFileInfo.Name.Equals(_albumFileName, StringComparison.OrdinalIgnoreCase))
+                {
+                    ffmpegOptions.WithVideoFilters(x => x.Scale(new Size(500, -1)));
+                }
             }
 
             pngFileInfo.Delete();

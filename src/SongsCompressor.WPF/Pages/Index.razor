@@ -48,10 +48,11 @@
 
 @*      TODO: Needs to verify is it possible to get rid of calling StateHasChanged. Without it The MudFab for moving next disabled condition will not update*@
         <MudSwitch Converter="@(new OptionsEnumConverter(OptionsEnum.ConvertPngToJpg, Settings.Options))" Color="Color.Primary" CheckedChanged="(bool e) => StateHasChanged()">Convert PNG to JPG</MudSwitch>
+            <MudSwitch Class="ml-12" Disabled="!Settings.Options.Contains(OptionsEnum.ConvertPngToJpg)" Converter="@(new OptionsEnumConverter(OptionsEnum.ResizeAlbum, Settings.Options))" Color="Color.Secondary" CheckedChanged="(bool e) => StateHasChanged()">Resize album cover</MudSwitch>
 
         <MudSwitch Class="mt-3" Converter="@(new OptionsEnumConverter(OptionsEnum.ConvertAudioToOpus, Settings.Options))" Color="Color.Primary" CheckedChanged="(bool e) => StateHasChanged()">Convert Audio to Opus</MudSwitch>
-        <MudSwitch Class="ml-12" Disabled="!Settings.Options.Contains(OptionsEnum.ConvertAudioToOpus)" Converter="@(new OptionsEnumConverter(OptionsEnum.ConvertAudioFromMp3, Settings.Options))" Color="Color.Secondary" CheckedChanged="(bool e) => StateHasChanged()">From MP3</MudSwitch>
-        <MudSwitch Class="ml-12" Disabled="!Settings.Options.Contains(OptionsEnum.ConvertAudioToOpus)" Converter="@(new OptionsEnumConverter(OptionsEnum.ConvertAudioFromOgg, Settings.Options))" Color="Color.Secondary" CheckedChanged="(bool e) => StateHasChanged()">From OGG</MudSwitch>
+            <MudSwitch Class="ml-12" Disabled="!Settings.Options.Contains(OptionsEnum.ConvertAudioToOpus)" Converter="@(new OptionsEnumConverter(OptionsEnum.ConvertAudioFromMp3, Settings.Options))" Color="Color.Secondary" CheckedChanged="(bool e) => StateHasChanged()">From MP3</MudSwitch>
+            <MudSwitch Class="ml-12" Disabled="!Settings.Options.Contains(OptionsEnum.ConvertAudioToOpus)" Converter="@(new OptionsEnumConverter(OptionsEnum.ConvertAudioFromOgg, Settings.Options))" Color="Color.Secondary" CheckedChanged="(bool e) => StateHasChanged()">From OGG</MudSwitch>
 
         <MudSwitch Class="mt-3" Converter="@(new OptionsEnumConverter(OptionsEnum.CreateBackup, Settings.Options))" Color="Color.Warning" CheckedChanged="(bool e) => StateHasChanged()">Create backup</MudSwitch>
     </MudCardContent>
