@@ -5,7 +5,7 @@ Clone Hero Songs Compressor is a tool that significantly reduces the size of you
 ![Application screenshoot](docs/img/app-screenshoot-darkmode.png?raw=true)
 
 
-Note that this process is very resource hungry and can take up to several hours on slower PC. At my personal PC (i9-7900x) library **compression from size 11.4GB to 5.4GB took 11 minutes.** It is of course example and results may vary depending on the user's hardware and library size.
+Note that this process is very resource hungry and can take up to several hours on slower PC. At my personal PC (i9-7900x) library **compression from size 11.4GB to 5.4GB took 9 minutes.** It is of course example and results may vary depending on the user's hardware and library size.
 
 ***
 ## Download & Usage Instructions
@@ -14,7 +14,7 @@ Note: Clone Hero Songs Compressor currently only supports Windows 64-bit OS.
 
 1. Download the latest archive of the application from the "Release" page on the right-hand side of the page. Extract into seperate directory.
 
-2. Run the executable in root directory (CloneHeroSongsCompresser.exe) or use shortcut to it, and select the "Add New Directory" button to specify the directory where your Clone Hero songs are located.
+2. Run the executable "Clone Hero Songs Compressor.exe" in root directory, and select the "Add New Directory" button to specify the directory where your Clone Hero songs are located.
 
 3. Select the "Start" button located at the bottom of the page to begin the compression process. The progress of the compression will be displayed on the application interface.
 

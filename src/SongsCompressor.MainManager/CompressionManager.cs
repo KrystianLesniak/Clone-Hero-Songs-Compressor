@@ -3,6 +3,7 @@ using Engine.FFmpegProvider;
 using Engine.ImagePngToJpgConverter;
 using SongsCompressor.Common.Enums;
 using SongsCompressor.Common.Interfaces;
+using SongsCompressor.Common.Interfaces.Services;
 using SongsCompressor.Common.Models;
 using SongsCompressor.Common.Services;
 
@@ -13,47 +14,58 @@ namespace SongCompressor.MainManager
         public IList<ICompressionEngine> Engines { get; set; } = new List<ICompressionEngine>();
 
         //Progress status
-        private ICompressionEngine? _currentlyRunningEngine;
+        private ICompressionEngine? currentlyRunningEngine;
+        private readonly OverallProgressStatus progress = new();
 
-        public Task Initialize(IList<string> directories, IList<OptionsEnum> options)
+        private readonly ISettingsStorage settingsStorage;
+
+        public CompressionManager(ISettingsStorage settingsStorage)
         {
-            InitializeEngines(directories.Select(x => new DirectoryInfo(x)), options);
+            this.settingsStorage = settingsStorage;
+        }
 
-            return Task.CompletedTask;
+        public async Task Initialize(UserSettings settings)
+        {
+            await settingsStorage.SaveSettings(settings);
+
+            InitializeEngines(settings.Directories, settings.Options);
         }
 
         public async Task Start()
         {
             foreach (var engine in Engines.OrderBy(x => x.ExecutionOrder))
             {
-                _currentlyRunningEngine = engine;
+                currentlyRunningEngine = engine;
                 await engine.Start();
-
                 await engine.Complete();
+
+                progress.EnginesFinished = Engines.Count(x => x.Completed);
             }
         }
 
         public async Task<OverallProgressStatus> GetCurrentProgressStatus()
         {
-            return new OverallProgressStatus
-            {
-                TotalEngines = Engines.Count,
-                EnginesFinished = Engines.Count(x => x.Completed),
-                EngineProgress = _currentlyRunningEngine is not null ? await _currentlyRunningEngine.GetCurrentProgress() : new EngineProgressStatus()
-            };
+            var engineProgress = currentlyRunningEngine is not null ? await currentlyRunningEngine.GetCurrentProgress() : new EngineProgressStatus();
+            progress.UpdateProgress(engineProgress);
+
+            return progress;
         }
 
-        private void InitializeEngines(IEnumerable<DirectoryInfo> directories, IList<OptionsEnum> options)
+        private void InitializeEngines(IEnumerable<string> directories, IList<OptionsEnum> options)
         {
             addEngine(ProvideFFmpegEngine.Create(options));
 
             foreach (var directory in directories)
             {
-                var backupHandler = new BackupHandler(directory, options);
+                var directoryInfo = new DirectoryInfo(directory);
 
-                addEngine(PngToJpgEngine.Create(options, directory, backupHandler));
-                addEngine(AudioToOpusEngine.Create(options, directory, backupHandler));
+                var backupHandler = new BackupHandler(directoryInfo, options);
+
+                addEngine(PngToJpgEngine.Create(options, directoryInfo, backupHandler));
+                addEngine(AudioToOpusEngine.Create(options, directoryInfo, backupHandler));
             }
+
+            progress.TotalEngines = Engines.Count;
 
             void addEngine(ICompressionEngine? x)
             {

@@ -13,6 +13,8 @@ namespace Engine.AudioToOpusConverter
         private readonly IEnumerable<OptionsEnum> options;
 
         //Progress Description
+        private int audioFilesCount;
+        private int audioFilesConvertedCount;
         private readonly EngineProgressStatus _progress = new();
 
         private AudioToOpusEngine(DirectoryInfo directoryInfo, IEnumerable<OptionsEnum> options, IBackupHandler backupHandler)
@@ -31,34 +33,27 @@ namespace Engine.AudioToOpusConverter
 
         public override Task<EngineProgressStatus> GetCurrentProgress()
         {
+            _progress.PercentageComplete = (int)Math.Round(100 * audioFilesConvertedCount / (audioFilesCount == 0 ? 1.0 : audioFilesCount));
+
             return Task.FromResult(_progress);
         }
 
         public override async Task Start()
         {
-            var convertingTasks = new HashSet<Task>();
             _progress.WorkDescription = "Retrieving Audio files";
 
             var audioFiles = await GetAudioFilesInfo();
 
-            int index = 0;
-            foreach (var audioFile in audioFiles)
+            await Parallel.ForEachAsync(audioFiles, async (audioFile, ct) =>
             {
-                convertingTasks.Add(ConvertAudioToOpus(audioFile));
+                if (audioFilesConvertedCount % Environment.ProcessorCount == 0)
+                    _progress.WorkDescription = $"Converting file {audioFile.Directory?.Name}\\{audioFile.Name} into Opus format";
 
-                _progress.WorkDescription = $"Converting file {audioFile.Directory?.Name}\\{audioFile.Name} into Opus format";
-                index++;
+                await ConvertAudioToOpus(audioFile);
 
-                if (index % Environment.ProcessorCount == 0)
-                {
-                    await Task.WhenAll(convertingTasks);
-                    _progress.PercentageComplete = (int)Math.Round((double)(100 * index) / audioFiles.Count);
-                }
-            }
+                audioFilesConvertedCount++;
+            });
 
-            await Task.WhenAll(convertingTasks);
-
-            _progress.PercentageComplete = 100;
             _progress.WorkDescription = "Compressing Audio files into Opus format finished";
         }
 
@@ -72,8 +67,10 @@ namespace Engine.AudioToOpusConverter
             if (options.Contains(OptionsEnum.ConvertAudioFromMp3))
                 audioFiles.UnionWith(directoryInfo.GetFiles("*.mp3", SearchOption.AllDirectories));
 
+            audioFilesCount = audioFiles.Count;
+
             return Task.FromResult(audioFiles);
-        }
+        } 
 
         private async Task ConvertAudioToOpus(FileInfo audioFile)
         {

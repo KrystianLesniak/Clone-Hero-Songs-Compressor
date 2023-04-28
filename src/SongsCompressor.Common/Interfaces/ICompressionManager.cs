@@ -5,7 +5,7 @@ namespace SongsCompressor.Common.Interfaces
 {
     public interface ICompressionManager
     {
-        Task Initialize(IList<string> dictionaries, IList<OptionsEnum> options);
+        Task Initialize(UserSettings settings);
         Task Start();
         Task<OverallProgressStatus> GetCurrentProgressStatus();
     }

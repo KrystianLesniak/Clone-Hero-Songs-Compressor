@@ -3,12 +3,28 @@
 @using SongsCompressor.Common.Interfaces;
 @using SongsCompressor.Common.Interfaces.Services;
 @using SongsCompressor.Common.Models;
+@using System.IO;
 @inject NavigationManager Navigation
 @inject IFolderPicker FolderPicker
 @inject ICompressionManager CompressionHandler
 @inject ISettingsStorage SettingsStorage;
 
-<MudCard Class="mt-4">
+
+<MudCard hidden="@(errors.Count == 0)" Class="mt-4">
+    <MudCardHeader>
+        <CardHeaderContent>
+            <MudText Typo="Typo.h4">Errors</MudText>
+        </CardHeaderContent>
+    </MudCardHeader>
+    <MudCardContent>
+        @foreach (var error in errors)
+        {
+            <MudText Class="mb-2" Color="Color.Error">@error</MudText>
+        }
+    </MudCardContent>
+</MudCard>
+
+<MudCard Class="mt-4 mb-4">
     <MudCardHeader>
         <CardHeaderContent>
             <MudText Typo="Typo.h4">Song Directories</MudText>
@@ -20,9 +36,9 @@
         <MudList>
         @foreach (var directory in Settings.Directories)
         {
-            <MudListItem @key="@directory.FullName">
+            <MudListItem @key="@directory">
                 <MudText Class="d-flex justify-space-between flex-grow-1 gap-4">
-                      <MudText Class="align-self-center">@directory.FullName</MudText> <MudIconButton OnClick="() => RemoveFolder(directory)" Icon="@Icons.Material.Filled.Delete" aria-label="delete"></MudIconButton>
+                      <MudText Class="align-self-center">@directory</MudText> <MudIconButton OnClick="() => RemoveFolder(directory)" Icon="@Icons.Material.Filled.Delete" aria-label="delete"></MudIconButton>
                 </MudText>              
             </MudListItem>
         }
@@ -32,7 +48,7 @@
         Variant="Variant.Filled"
         Color="Color.Primary"
         StartIcon="@Icons.Material.Filled.DriveFolderUpload"
-        OnClick="() => PickFolder()"> Add new directory</MudButton>
+        OnClick="() => PickFolders()"> Add new directory</MudButton>
     </MudCardContent>
 </MudCard>
 
@@ -47,38 +63,48 @@
 
 @*      TODO: Needs to verify is it possible to get rid of calling StateHasChanged. Without it The MudFab for moving next disabled condition will not update*@
         <MudSwitch Converter="@(new OptionsEnumConverter(OptionsEnum.ConvertPngToJpg, Settings.Options))" Color="Color.Primary" CheckedChanged="(bool e) => StateHasChanged()">Convert PNG to JPG</MudSwitch>
+            <MudSwitch Class="ml-12" Disabled="!Settings.Options.Contains(OptionsEnum.ConvertPngToJpg)" Converter="@(new OptionsEnumConverter(OptionsEnum.ResizeAlbum, Settings.Options))" Color="Color.Secondary" CheckedChanged="(bool e) => StateHasChanged()">Resize album cover</MudSwitch>
 
         <MudSwitch Class="mt-3" Converter="@(new OptionsEnumConverter(OptionsEnum.ConvertAudioToOpus, Settings.Options))" Color="Color.Primary" CheckedChanged="(bool e) => StateHasChanged()">Convert Audio to Opus</MudSwitch>
-        <MudSwitch Class="ml-12" Disabled="!Settings.Options.Contains(OptionsEnum.ConvertAudioToOpus)" Converter="@(new OptionsEnumConverter(OptionsEnum.ConvertAudioFromMp3, Settings.Options))" Color="Color.Secondary" CheckedChanged="(bool e) => StateHasChanged()">From MP3</MudSwitch>
-        <MudSwitch Class="ml-12" Disabled="!Settings.Options.Contains(OptionsEnum.ConvertAudioToOpus)" Converter="@(new OptionsEnumConverter(OptionsEnum.ConvertAudioFromOgg, Settings.Options))" Color="Color.Secondary" CheckedChanged="(bool e) => StateHasChanged()">From OGG</MudSwitch>
+            <MudSwitch Class="ml-12" Disabled="!Settings.Options.Contains(OptionsEnum.ConvertAudioToOpus)" Converter="@(new OptionsEnumConverter(OptionsEnum.ConvertAudioFromMp3, Settings.Options))" Color="Color.Secondary" CheckedChanged="(bool e) => StateHasChanged()">From MP3</MudSwitch>
+            <MudSwitch Class="ml-12" Disabled="!Settings.Options.Contains(OptionsEnum.ConvertAudioToOpus)" Converter="@(new OptionsEnumConverter(OptionsEnum.ConvertAudioFromOgg, Settings.Options))" Color="Color.Secondary" CheckedChanged="(bool e) => StateHasChanged()">From OGG</MudSwitch>
 
         <MudSwitch Class="mt-3" Converter="@(new OptionsEnumConverter(OptionsEnum.CreateBackup, Settings.Options))" Color="Color.Warning" CheckedChanged="(bool e) => StateHasChanged()">Create backup</MudSwitch>
     </MudCardContent>
+    <MudCardActions>
+        <MudButton OnClick="() => Settings.Options = new UserSettings().Options" Variant="Variant.Text" Color="Color.Primary">Reset to default</MudButton>
+    </MudCardActions>
 </MudCard>
 
-<MudFab OnClick="() => Start()" Disabled="Settings.Options.Count == 0 || Settings.Directories.Count == 0 || _loading" Color="Color.Primary" StartIcon="@Icons.Material.Filled.Start" Label="Start" />
+<MudFab OnClick="() => Start()" Disabled="Settings.Options.Count == 0 || Settings.Directories.Count == 0 || _loading" Color="Color.Primary" Class="mb-4" StartIcon="@Icons.Material.Filled.Start" Label="Start" />
 
 
 @code
 {
+    #pragma warning disable CS8618 // No constrcutor, it's initialized in OnParameterSet
     private UserSettings Settings;
+#pragma warning disable CS8618
 
     private bool _loading = false;
+    List<string> errors = new();
 
     protected override async Task OnParametersSetAsync()
     {
         Settings = await SettingsStorage.GetSettings();
     }
 
-    private async Task PickFolder()
+    private void PickFolders()
     {
-        var path = await FolderPicker.PickFolder();
+        var paths = FolderPicker.PickFolders();
 
-        if (!string.IsNullOrWhiteSpace(path) && !Settings.Directories.Any(x=>x.FullName == path))
-            Settings.Directories.Add(new DirectoryInfo(path));
+        foreach(var path in paths)
+        {
+            if (!string.IsNullOrWhiteSpace(path) && !Settings.Directories.Contains(path))
+                Settings.Directories.Add(path);
+        }
     }
 
-    private void RemoveFolder(DirectoryInfo directory)
+    private void RemoveFolder(string directory)
     {
         Settings.Directories.Remove(directory);
     }
@@ -86,8 +112,26 @@
     private async Task Start()
     {
         _loading = true;
-        await CompressionHandler.Initialize(Settings);
-        Navigation.NavigateTo("progress");
+
+        if(AreDirectoriesValid())
+        {
+            await CompressionHandler.Initialize(Settings);
+            Navigation.NavigateTo("progress");
+        }
+
+        _loading = false;
+    }
+
+    private bool AreDirectoriesValid()
+    {
+        errors = new();
+        foreach(var directory in Settings.Directories)
+        {
+            if (!Directory.Exists(directory))
+                errors.Add($"Directory {directory} does not exist");
+        }
+
+        return errors.Count == 0;
     }
 
     private class OptionsEnumConverter : BoolConverter<bool>

@@ -11,6 +11,7 @@
     <ProjectReference Include="..\Engines\Engine.FFmpegProvider\Engine.FFmpegProvider.csproj" />
     <ProjectReference Include="..\Engines\Engine.ImagePngToJpgConverter\Engine.ImagePngToJpgConverter.csproj" />
     <ProjectReference Include="..\SongsCompressor.Common\SongsCompressor.Common.csproj" />
+    <ProjectReference Include="..\SongsCompressor.Services\SongsCompressor.Services.csproj" />
   </ItemGroup>
 
 </Project>
