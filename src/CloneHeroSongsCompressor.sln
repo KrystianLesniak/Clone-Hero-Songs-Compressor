@@ -18,6 +18,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SongsCompressor.Services", 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SongsCompressor.WPF", "SongsCompressor.WPF\SongsCompressor.WPF.csproj", "{D76941BE-50F3-41E9-A80F-C84CE11512FA}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{0451417E-73A2-4D5C-81BF-4D0E213D60A7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SongsCompressor.MainManager.Tests", "..\tests\SongsCompressor.MainManager.Tests\SongsCompressor.MainManager.Tests.csproj", "{5250404B-4C40-4D81-82A0-5DCDD9ABFEB3}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -82,6 +86,14 @@ Global
 		{D76941BE-50F3-41E9-A80F-C84CE11512FA}.Release|Any CPU.Build.0 = Release|Any CPU
 		{D76941BE-50F3-41E9-A80F-C84CE11512FA}.Release|x64.ActiveCfg = Release|Any CPU
 		{D76941BE-50F3-41E9-A80F-C84CE11512FA}.Release|x64.Build.0 = Release|Any CPU
+		{5250404B-4C40-4D81-82A0-5DCDD9ABFEB3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5250404B-4C40-4D81-82A0-5DCDD9ABFEB3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5250404B-4C40-4D81-82A0-5DCDD9ABFEB3}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{5250404B-4C40-4D81-82A0-5DCDD9ABFEB3}.Debug|x64.Build.0 = Debug|Any CPU
+		{5250404B-4C40-4D81-82A0-5DCDD9ABFEB3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5250404B-4C40-4D81-82A0-5DCDD9ABFEB3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5250404B-4C40-4D81-82A0-5DCDD9ABFEB3}.Release|x64.ActiveCfg = Release|Any CPU
+		{5250404B-4C40-4D81-82A0-5DCDD9ABFEB3}.Release|x64.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -90,9 +102,10 @@ Global
 		{A5D2DC2E-FA4C-4F58-A5F9-3FE33335D16D} = {C8ADBD4D-972F-4F29-A4A6-4F440530D64E}
 		{72E4AA34-CDE6-48CE-A802-9175CC066DEE} = {C8ADBD4D-972F-4F29-A4A6-4F440530D64E}
 		{CC222B65-296E-4AC4-B94F-4DF26C69C180} = {C8ADBD4D-972F-4F29-A4A6-4F440530D64E}
+		{5250404B-4C40-4D81-82A0-5DCDD9ABFEB3} = {0451417E-73A2-4D5C-81BF-4D0E213D60A7}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {E97CFD95-26F1-4545-86B0-19249A57380C}
 		        SolutionGuid = {61F7FB11-1E47-470C-91E2-47F8143E1572}
+		SolutionGuid = {E97CFD95-26F1-4545-86B0-19249A57380C}
 	EndGlobalSection
 EndGlobal
