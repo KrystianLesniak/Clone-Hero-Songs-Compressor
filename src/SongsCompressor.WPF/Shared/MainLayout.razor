@@ -1,4 +1,5 @@
-﻿@inherits LayoutComponentBase
+﻿@using SongsCompressor.Common.Consts;
+@inherits LayoutComponentBase
 @inject IJSRuntime jsRuntime
 
 <MudThemeProvider @ref="@_mudThemeProvider" @bind-IsDarkMode="@_isDarkMode" />
@@ -21,7 +22,6 @@
     </MudMainContent>
 </MudLayout>
 
-
 @code {
     private MudThemeProvider _mudThemeProvider;
     private bool _isDarkMode;
@@ -37,7 +37,6 @@
 
     private async Task NavigateToGitHub()
     {
-        string url = "https://github.com/KrystianLesniak/Clone-Hero-Songs-Compressor";
-        await jsRuntime.InvokeAsync<object>("open", url, "_blank");
+        await jsRuntime.InvokeAsync<object>("open", AppInfoConsts.RepositoryUrl, "_blank");
     }
 }
