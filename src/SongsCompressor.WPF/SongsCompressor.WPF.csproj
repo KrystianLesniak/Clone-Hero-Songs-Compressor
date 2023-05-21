@@ -2,7 +2,7 @@
 
   <PropertyGroup>
 	<AssemblyName>Clone Hero Songs Compressor</AssemblyName>
-	<VersionPrefix>0.0.4</VersionPrefix>
+	<VersionPrefix>0.0.5</VersionPrefix>
 	<VersionSuffix>alpha</VersionSuffix>
 	<RootNamespace>SongsCompressor.WPF</RootNamespace>
 	<OutputType>WinExe</OutputType>
