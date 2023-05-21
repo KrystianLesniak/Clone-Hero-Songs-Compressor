@@ -26,10 +26,13 @@ namespace SongCompressor.MainManager
 
         public async Task Initialize(UserSettings settings)
         {
+            ValidateSettings(settings);
             await settingsStorage.SaveSettings(settings);
 
             InitializeEngines(settings.Directories, settings.Options);
         }
+
+
 
         public async Task Start()
         {
@@ -49,6 +52,23 @@ namespace SongCompressor.MainManager
             progress.UpdateProgress(engineProgress);
 
             return progress;
+        }
+
+        private static void ValidateSettings(UserSettings settings)
+        {
+            if (settings.Directories.Count == 0)
+                throw new ArgumentException("Directories list is empty");
+
+            if (settings.Options.Count == 0)
+                throw new ArgumentException("Options list is empty");
+
+            foreach (var directory in settings.Directories)
+            {
+                if (!Directory.Exists(directory))
+                {
+                    throw new DirectoryNotFoundException($"Directory {directory} not found");
+                }
+            }
         }
 
         private void InitializeEngines(IEnumerable<string> directories, IList<OptionsEnum> options)
