@@ -1,4 +1,6 @@
 ﻿@page "/"
+@using FluentValidation;
+@using FluentValidation.Results;
 @using SongsCompressor.Common.Enums;
 @using SongsCompressor.Common.Interfaces;
 @using SongsCompressor.Common.Interfaces.Services;
@@ -9,21 +11,6 @@
 @inject ICompressionManager CompressionHandler
 @inject ISettingsStorage SettingsStorage;
 
-
-<MudCard hidden="@(errors.Count == 0)" Class="mt-4">
-    <MudCardHeader>
-        <CardHeaderContent>
-            <MudText Typo="Typo.h4">Errors</MudText>
-        </CardHeaderContent>
-    </MudCardHeader>
-    <MudCardContent>
-        @foreach (var error in errors)
-        {
-            <MudText Class="mb-2" Color="Color.Error">@error</MudText>
-        }
-    </MudCardContent>
-</MudCard>
-
 <MudCard Class="mt-4 mb-4">
     <MudCardHeader>
         <CardHeaderContent>
@@ -32,7 +19,8 @@
     </MudCardHeader>
     <MudCardContent>
     <MudText Class="mb-4">Provide paths to folders where your Clone Hero songs are located at</MudText>
-        <MudPaper hidden="@(Settings.Directories.Count < 1)">
+
+    <MudPaper Class="mb-4" hidden="@(Settings.Directories.Count < 1)">
         <MudList>
         @foreach (var directory in Settings.Directories)
         {
@@ -44,6 +32,12 @@
         }
         </MudList>
     </MudPaper>
+
+    @foreach (var error in ValidationResult.Errors.Where(x => x.PropertyName.StartsWith(nameof(Settings.Directories))))
+    {
+            <MudAlert Severity="MudBlazor.Severity.Error" Variant="Variant.Filled">@error</MudAlert>
+    }
+
     <MudButton Class="mt-6" HtmlTag="label"
         Variant="Variant.Filled"
         Color="Color.Primary"
@@ -58,6 +52,7 @@
             <MudText Typo="Typo.h4">Options</MudText>
         </CardHeaderContent>
     </MudCardHeader>
+
     <MudCardContent>
         <MudText Class="mb-4">If you're uncertain about the purpose of an option, it's best to stick with the default setting</MudText>
 
@@ -69,25 +64,30 @@
             <MudSwitch Class="ml-12" Disabled="!Settings.Options.Contains(OptionsEnum.ConvertAudioToOpus)" Converter="@(new OptionsEnumConverter(OptionsEnum.ConvertAudioFromMp3, Settings.Options))" Color="Color.Secondary" CheckedChanged="(bool e) => StateHasChanged()">From MP3</MudSwitch>
             <MudSwitch Class="ml-12" Disabled="!Settings.Options.Contains(OptionsEnum.ConvertAudioToOpus)" Converter="@(new OptionsEnumConverter(OptionsEnum.ConvertAudioFromOgg, Settings.Options))" Color="Color.Secondary" CheckedChanged="(bool e) => StateHasChanged()">From OGG</MudSwitch>
 
-        <MudSwitch Class="mt-3" Converter="@(new OptionsEnumConverter(OptionsEnum.CreateBackup, Settings.Options))" Color="Color.Warning" CheckedChanged="(bool e) => StateHasChanged()">Create backup</MudSwitch>
+        <MudSwitch Class="mt-3 mb-4" Converter="@(new OptionsEnumConverter(OptionsEnum.CreateBackup, Settings.Options))" Color="Color.Warning" CheckedChanged="(bool e) => StateHasChanged()">Create backup</MudSwitch>
+    
+    @foreach (var error in ValidationResult.Errors.Where(x => x.PropertyName == nameof(Settings.Options)))
+    {
+        <MudAlert Severity="MudBlazor.Severity.Error" Variant="Variant.Filled">@error</MudAlert>
+    }
+
     </MudCardContent>
+
     <MudCardActions>
         <MudButton OnClick="() => Settings.Options = new UserSettings().Options" Variant="Variant.Text" Color="Color.Primary">Reset to default</MudButton>
     </MudCardActions>
 </MudCard>
 
-<MudFab OnClick="() => Start()" Disabled="Settings.Options.Count == 0 || Settings.Directories.Count == 0 || _loading" Color="Color.Primary" Class="mb-4" StartIcon="@Icons.Material.Filled.Start" Label="Start" />
-
+<MudFab OnClick="() => Start()" Disabled="_loading" Color="Color.Primary" Class="mb-4" StartIcon="@Icons.Material.Filled.Start" Label="Start" />
 
 @code
 {
     #pragma warning disable CS8618 // No constrcutor, it's initialized in OnParameterSet
     private UserSettings Settings;
 #pragma warning disable CS8618
+    private ValidationResult ValidationResult = new();
 
     private bool _loading = false;
-    List<string> errors = new();
-
     protected override async Task OnParametersSetAsync()
     {
         Settings = await SettingsStorage.GetSettings();
@@ -113,7 +113,9 @@
     {
         _loading = true;
 
-        if(AreDirectoriesValid())
+        ValidationResult = await new SettingsModelFluentValidator().ValidateAsync(Settings);
+
+        if (ValidationResult.IsValid)
         {
             await CompressionHandler.Initialize(Settings);
             Navigation.NavigateTo("progress");
@@ -122,16 +124,23 @@
         _loading = false;
     }
 
-    private bool AreDirectoriesValid()
-    {
-        errors = new();
-        foreach(var directory in Settings.Directories)
-        {
-            if (!Directory.Exists(directory))
-                errors.Add($"Directory {directory} does not exist");
-        }
 
-        return errors.Count == 0;
+    public class SettingsModelFluentValidator : AbstractValidator<UserSettings>
+    {
+        public SettingsModelFluentValidator()
+        {
+            RuleFor(model => model.Directories)
+                .NotEmpty()
+                .WithMessage("Provide songs directory");
+
+            RuleForEach(model => model.Directories)
+                .Must(x => Directory.Exists(x))
+                .WithMessage("Directory \"{PropertyValue}\" does not exist");
+
+            RuleFor(model => model.Options)
+                .Must(x=> x.Any(y=> OptionsEnumLists.MainOptions.Contains(y)))
+                .WithMessage("Select at least 1 option");
+        }
     }
 
     private class OptionsEnumConverter : BoolConverter<bool>

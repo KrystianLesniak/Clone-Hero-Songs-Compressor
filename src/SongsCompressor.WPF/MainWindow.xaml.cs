@@ -1,11 +1,17 @@
 ﻿using System.Windows;
-using Microsoft.AspNetCore.Components.WebView.Wpf;
 using Microsoft.Extensions.DependencyInjection;
 using SongCompressor.MainManager;
 using SongsCompressor.Common.Interfaces.Services;
 using SongsCompressor.Common.Interfaces;
 using SongsCompressor.Services.Services;
 using MudBlazor.Services;
+using System.Threading.Tasks;
+using System.Reflection;
+using Ookii.Dialogs.Wpf;
+using System;
+using System.Diagnostics;
+using System.Security.Policy;
+using SongsCompressor.Common.Consts;
 
 namespace SongsCompressor.WPF
 {

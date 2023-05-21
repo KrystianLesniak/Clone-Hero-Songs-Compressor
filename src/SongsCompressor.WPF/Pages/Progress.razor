@@ -48,7 +48,7 @@
 <MudFab Disabled="@(!_progressStatus.AllEnginesComplete)" Class="mt-4" OnClick="() => Close()" Color="Color.Primary" StartIcon="@Icons.Material.Filled.Close" Label="Close" />
 
 @code {
-#pragma warning disable CS8618 // No constrcutor, it's initialized in OnParameterSet
+    #pragma warning disable CS8618 // No constrcutor, it's initialized in OnParameterSet
     private OverallProgressStatus _progressStatus;
     private Task CheckingStatusTask;
 #pragma warning restore CS8618
@@ -62,16 +62,16 @@
 
     private async Task CheckForStatus(Task compressionStartTask)
     {
-        var periodicTimer = new System.Threading.PeriodicTimer(TimeSpan.FromSeconds(4));
-
-        do
+        using(var periodicTimer = new System.Threading.PeriodicTimer(TimeSpan.FromSeconds(4)))
         {
-            _progressStatus = await CompressionHandler.GetCurrentProgressStatus();
-            StateHasChanged();
-        }
-        while (!_progressStatus.AllEnginesComplete && await periodicTimer.WaitForNextTickAsync());
+            do
+            {
+                _progressStatus = await CompressionHandler.GetCurrentProgressStatus();
+                StateHasChanged();
+            }
+            while (!_progressStatus.AllEnginesComplete && await periodicTimer.WaitForNextTickAsync());
+        };
 
-        periodicTimer.Dispose();
         await compressionStartTask;
     }
 

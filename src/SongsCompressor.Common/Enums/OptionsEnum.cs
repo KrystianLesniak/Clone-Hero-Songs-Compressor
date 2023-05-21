@@ -10,4 +10,13 @@
         ConvertAudioFromMp3 = 310,
         ConvertAudioFromOgg = 320,
     }
+
+    public static class OptionsEnumLists
+    {
+        public static readonly OptionsEnum[] MainOptions =
+        {
+            OptionsEnum.ConvertPngToJpg,
+            OptionsEnum.ConvertAudioToOpus,
+        };
+    }
 }

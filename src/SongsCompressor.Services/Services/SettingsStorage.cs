@@ -11,7 +11,7 @@ namespace SongsCompressor.Services.Services
         public SettingsStorage()
         {
             var path = Path.GetDirectoryName(_dbPath);
-            Directory.CreateDirectory(path);
+            Directory.CreateDirectory(path!);
         }
 
         public Task<UserSettings> GetSettings()
