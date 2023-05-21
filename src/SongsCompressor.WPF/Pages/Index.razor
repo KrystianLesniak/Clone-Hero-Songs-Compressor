@@ -138,7 +138,7 @@
                 .WithMessage("Directory \"{PropertyValue}\" does not exist");
 
             RuleFor(model => model.Options)
-                .NotEmpty()
+                .Must(x=> x.Any(y=> OptionsEnumLists.MainOptions.Contains(y)))
                 .WithMessage("Select at least 1 option");
         }
     }
