@@ -1,17 +1,10 @@
-﻿using System.Windows;
-using Microsoft.Extensions.DependencyInjection;
-using SongCompressor.MainManager;
-using SongsCompressor.Common.Interfaces.Services;
-using SongsCompressor.Common.Interfaces;
-using SongsCompressor.Services.Services;
+﻿using Microsoft.Extensions.DependencyInjection;
 using MudBlazor.Services;
-using System.Threading.Tasks;
-using System.Reflection;
-using Ookii.Dialogs.Wpf;
-using System;
-using System.Diagnostics;
-using System.Security.Policy;
-using SongsCompressor.Common.Consts;
+using SongCompressor.MainManager;
+using SongsCompressor.Common.Interfaces;
+using SongsCompressor.Common.Interfaces.Services;
+using SongsCompressor.Services.Services;
+using System.Windows;
 
 namespace SongsCompressor.WPF
 {

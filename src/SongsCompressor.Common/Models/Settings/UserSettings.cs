@@ -1,5 +1,4 @@
 ﻿using SongsCompressor.Common.Enums;
-using System.Collections.ObjectModel;
 
 namespace SongsCompressor.Common.Models
 {

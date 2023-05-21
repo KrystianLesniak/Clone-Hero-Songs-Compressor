@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace SongsCompressor.Common.Models
+﻿namespace SongsCompressor.Common.Models
 {
     public class OverallProgressStatus
     {
