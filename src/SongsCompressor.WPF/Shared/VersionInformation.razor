@@ -1,0 +1,56 @@
+﻿@using SongsCompressor.Common.Consts;
+@using SongsCompressor.Services.Services;
+@inject IJSRuntime jsRuntime
+@inject IDialogService dialogService
+
+<MudText hidden="@(newVersionString is not null)" Class="ml-5">
+    v @_localVersion?.ToString()
+</MudText>
+
+<MudText hidden="@(newVersionString is null)" Class="ml-5">
+    v @_localVersion?.ToString()<br />
+    <MudLink Target="_blank" Color="Color.Secondary" Href="@AppInfoConsts.RepositoryReleasesUrl">New Update!</MudLink>
+</MudText>
+
+@code {
+    private readonly Version? _localVersion = System.Reflection.Assembly.GetEntryAssembly()?.GetName().Version;
+    private string? newVersionString = null;
+
+    protected override void OnParametersSet()
+    {
+        _ = CheckForUpdatesAndShowMessage();
+    }
+
+    private async Task CheckForUpdatesAndShowMessage()
+    {
+        if (_localVersion == null)
+            return;
+
+        var updateChecker = new UpdateChecker(_localVersion);
+
+        if (await updateChecker.CheckForNewGitHubVersion())
+        {
+            newVersionString = updateChecker.LatestVersionString;
+
+            StateHasChanged();
+
+            bool? result = await dialogService.ShowMessageBox(
+            new MessageBoxOptions
+            {
+                Title = "New version available. Would you like to go to the download page now?",
+                MarkupMessage = (MarkupString)$"We have detected a newer version of the application: {newVersionString}. <br />Your current version is {_localVersion}. <br />It's always a good idea to stay up to date with the latest versions of our application as they come with enhanced stability and performance improvements.",
+                YesText = "Yes",
+                NoText = "No"
+            },
+            new DialogOptions
+            {
+                DisableBackdropClick = true,
+            });
+
+            if (result ?? false)
+            {
+                await jsRuntime.InvokeAsync<object>("open", AppInfoConsts.RepositoryReleasesUrl, "_blank");
+            }
+        }
+    }
+}
