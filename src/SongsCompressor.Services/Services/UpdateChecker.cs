@@ -19,7 +19,7 @@ namespace SongsCompressor.Services.Services
             GitHubClient client = new(new ProductHeaderValue("clone-hero-songs-compressor-update-check"));
             Release latestRelease = await client.Repository.Release.GetLatest(AppInfoConsts.RepositoryAuthor, AppInfoConsts.RepositoryName);
 
-            if(latestRelease is null)
+            if (latestRelease is null)
                 return false;
 
             LatestVersionString = Regex.Replace(latestRelease.TagName, "[^0-9.]", "");

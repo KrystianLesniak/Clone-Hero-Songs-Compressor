@@ -70,7 +70,7 @@ namespace Engine.AudioToOpusConverter
             audioFilesCount = audioFiles.Count;
 
             return Task.FromResult(audioFiles);
-        } 
+        }
 
         private async Task ConvertAudioToOpus(FileInfo audioFile)
         {
