@@ -1,7 +1,7 @@
 ![Application logo](src/CloneHeroSongsCompressor/wwwroot/images/logo_transparent.png?raw=true)
 ***
 [![GitHub release (latest by date)](https://img.shields.io/github/v/release/KrystianLesniak/Clone-Hero-Songs-Compressor)](https://github.com/KrystianLesniak/Clone-Hero-Songs-Compressor/releases)
-[![GitHub release downloads (latest by date)](https://img.shields.io/github/downloads/KrystianLesniak/Clone-Hero-Songs-Compressor/total)](https://github.com/KrystianLesniak/Clone-Hero-Songs-Compressor/releases)
+[![GitHub release downloads](https://img.shields.io/github/downloads/KrystianLesniak/Clone-Hero-Songs-Compressor/total)](https://github.com/KrystianLesniak/Clone-Hero-Songs-Compressor/releases)
 
 Clone Hero Songs Compressor is a tool that significantly reduces the size of your Clone Hero songs library (by approximately 45%).<br>
 
