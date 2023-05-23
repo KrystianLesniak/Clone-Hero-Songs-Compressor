@@ -36,6 +36,7 @@ namespace SongCompressor.MainManager
 
         public async Task Start()
         {
+            //TODO: Add exception handling & logging
             foreach (var engine in Engines.OrderBy(x => x.ExecutionOrder))
             {
                 currentlyRunningEngine = engine;
