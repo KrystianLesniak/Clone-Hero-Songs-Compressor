@@ -9,7 +9,7 @@ namespace Engine.AudioToOpusConverter
     public class AudioToOpusEngine : BaseEngine
     {
         private readonly DirectoryInfo directoryInfo;
-        private readonly IBackupHandler backupHandler;
+        private readonly IDirectoryBackupHandler backupHandler;
         private readonly IEnumerable<OptionsEnum> options;
 
         //Progress Description
@@ -17,13 +17,13 @@ namespace Engine.AudioToOpusConverter
         private int audioFilesConvertedCount;
         private readonly EngineProgressStatus _progress = new();
 
-        private AudioToOpusEngine(DirectoryInfo directoryInfo, IEnumerable<OptionsEnum> options, IBackupHandler backupHandler)
+        private AudioToOpusEngine(DirectoryInfo directoryInfo, IEnumerable<OptionsEnum> options, IDirectoryBackupHandler backupHandler)
         {
             this.directoryInfo = directoryInfo ?? throw new ArgumentNullException(nameof(directoryInfo));
             this.options = options ?? throw new ArgumentNullException(nameof(options));
             this.backupHandler = backupHandler ?? throw new ArgumentNullException(nameof(backupHandler));
         }
-        public static ICompressionEngine? Create(IList<OptionsEnum> options, DirectoryInfo directoryInfo, IBackupHandler backupHandler)
+        public static ICompressionEngine? Create(IList<OptionsEnum> options, DirectoryInfo directoryInfo, IDirectoryBackupHandler backupHandler)
         {
             if (options.Contains(OptionsEnum.ConvertAudioToOpus))
                 return new AudioToOpusEngine(directoryInfo, options, backupHandler);

@@ -3,18 +3,18 @@
 @inject IJSRuntime jsRuntime
 @inject IDialogService dialogService
 
-<MudText hidden="@(newVersionString is not null)" Class="ml-5">
-    v @_localVersion?.ToString()
+<MudText hidden="@(_newVersionString is not null)" Class="mr-4">
+    v @_localVersion?.ToString(3)
 </MudText>
 
-<MudText hidden="@(newVersionString is null)" Class="ml-5">
-    v @_localVersion?.ToString()<br />
+<MudText hidden="@(_newVersionString is null)" Class="mr-4">
+    v @_localVersion?.ToString(3)<br />
     <MudLink Target="_blank" Color="Color.Secondary" Href="@AppInfoConsts.RepositoryReleasesUrl">New Update!</MudLink>
 </MudText>
 
 @code {
     private readonly Version? _localVersion = System.Reflection.Assembly.GetEntryAssembly()?.GetName().Version;
-    private string? newVersionString = null;
+    private string? _newVersionString = null;
 
     protected override void OnParametersSet()
     {
@@ -30,7 +30,7 @@
 
         if (await updateChecker.CheckForNewGitHubVersion())
         {
-            newVersionString = updateChecker.LatestVersionString;
+            _newVersionString = updateChecker.LatestVersionString;
 
             StateHasChanged();
 
@@ -38,7 +38,7 @@
             new MessageBoxOptions
             {
                 Title = "New version available. Would you like to go to the download page now?",
-                MarkupMessage = (MarkupString)$"We have detected a newer version of the application: {newVersionString}. <br />Your current version is {_localVersion}. <br />It's always a good idea to stay up to date with the latest versions of our application as they come with enhanced stability and performance improvements.",
+                MarkupMessage = (MarkupString)$"We have detected a newer version of the application: {_newVersionString}. <br />Your current version is {_localVersion.ToString(3)}. <br />It's always a good idea to stay up to date with the latest versions of our application as they come with enhanced stability and performance improvements.",
                 YesText = "Yes",
                 NoText = "No"
             },

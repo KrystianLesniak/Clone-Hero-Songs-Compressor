@@ -1,0 +1,56 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net7.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+
+    <IsPackable>false</IsPackable>
+    <IsTestProject>true</IsTestProject>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.6.0" />
+    <PackageReference Include="NUnit" Version="3.13.3" />
+    <PackageReference Include="NUnit3TestAdapter" Version="4.4.2" />
+    <PackageReference Include="NUnit.Analyzers" Version="3.6.1" />
+    <PackageReference Include="coverlet.collector" Version="6.0.0">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\src\Engines\Engine.AudioToOpusConverter\Engine.AudioToOpusConverter.csproj" />
+    <ProjectReference Include="..\..\..\src\Engines\Engine.FFmpegProvider\Engine.FFmpegProvider.csproj" />
+    <ProjectReference Include="..\..\..\src\SongsCompressor.Services\SongsCompressor.Services.csproj" />
+    <ProjectReference Include="..\Engine.Tests.Common\Engine.Tests.Common.csproj" />
+    <ProjectReference Include="..\Tests.Common\Tests.Common.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="resources\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="resources\file_example_MP3_2MG.mp3">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="resources\Free_Test_Data_2MB_OGG.ogg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="resources\Free_Test_Data_500KB_OGG.ogg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="resources\subfolder\Free_Test_Data_2MB_MP3.mp3">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="resources\subfolder\Free_Test_Data_5MB_MP3.mp3">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="resources\subfolder\getsamplefiles_com_sample_2.ogg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+</Project>

@@ -10,7 +10,7 @@ namespace Engine.ImagePngToJpgConverter
     public class PngToJpgEngine : BaseEngine
     {
         private readonly DirectoryInfo directoryInfo;
-        private readonly IBackupHandler backupHandler;
+        private readonly IDirectoryBackupHandler backupHandler;
         private readonly IEnumerable<OptionsEnum> options;
 
         private readonly string _albumFileName = "album.png";
@@ -20,17 +20,17 @@ namespace Engine.ImagePngToJpgConverter
         private int pngFilesCount;
         private int pngFilesConvertedCount;
 
-        private PngToJpgEngine(DirectoryInfo directoryInfo, IEnumerable<OptionsEnum> options, IBackupHandler backupHandler)
+        private PngToJpgEngine(IEnumerable<OptionsEnum> options, DirectoryInfo directoryInfo, IDirectoryBackupHandler backupHandler)
         {
             this.directoryInfo = directoryInfo ?? throw new ArgumentNullException(nameof(directoryInfo));
             this.options = options ?? throw new ArgumentNullException(nameof(options));
             this.backupHandler = backupHandler ?? throw new ArgumentNullException(nameof(backupHandler));
         }
 
-        public static ICompressionEngine? Create(IList<OptionsEnum> options, DirectoryInfo directoryInfo, IBackupHandler backupHandler)
+        public static ICompressionEngine? Create(IList<OptionsEnum> options, DirectoryInfo directoryInfo, IDirectoryBackupHandler backupHandler)
         {
             if (options.Contains(OptionsEnum.ConvertPngToJpg))
-                return new PngToJpgEngine(directoryInfo, options, backupHandler);
+                return new PngToJpgEngine(options, directoryInfo, backupHandler);
 
             return null;
         }
