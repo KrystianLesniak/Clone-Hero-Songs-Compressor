@@ -32,6 +32,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Engine.AudioToOpusConverter
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SongsCompressor.Services.Tests", "..\tests\SongsCompressor.Services.Tests\SongsCompressor.Services.Tests.csproj", "{310E1B5B-97E3-4EE7-8CD6-CF5D06C0CDA2}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Engine.Tests.Common", "..\tests\Engines\Engine.Tests.Common\Engine.Tests.Common.csproj", "{5BFE7988-8E70-478F-BE78-AB9963996AC0}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -136,6 +138,14 @@ Global
 		{310E1B5B-97E3-4EE7-8CD6-CF5D06C0CDA2}.Release|Any CPU.Build.0 = Release|Any CPU
 		{310E1B5B-97E3-4EE7-8CD6-CF5D06C0CDA2}.Release|x64.ActiveCfg = Release|Any CPU
 		{310E1B5B-97E3-4EE7-8CD6-CF5D06C0CDA2}.Release|x64.Build.0 = Release|Any CPU
+		{5BFE7988-8E70-478F-BE78-AB9963996AC0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5BFE7988-8E70-478F-BE78-AB9963996AC0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5BFE7988-8E70-478F-BE78-AB9963996AC0}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{5BFE7988-8E70-478F-BE78-AB9963996AC0}.Debug|x64.Build.0 = Debug|Any CPU
+		{5BFE7988-8E70-478F-BE78-AB9963996AC0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5BFE7988-8E70-478F-BE78-AB9963996AC0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5BFE7988-8E70-478F-BE78-AB9963996AC0}.Release|x64.ActiveCfg = Release|Any CPU
+		{5BFE7988-8E70-478F-BE78-AB9963996AC0}.Release|x64.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -150,6 +160,7 @@ Global
 		{C53BE011-292E-4716-8AF5-8A959920728A} = {7B2C3191-AB95-4FF2-B7CD-C05D1BD66716}
 		{87A53CD8-9603-420B-A9FD-AAF4293D10C5} = {7B2C3191-AB95-4FF2-B7CD-C05D1BD66716}
 		{310E1B5B-97E3-4EE7-8CD6-CF5D06C0CDA2} = {0451417E-73A2-4D5C-81BF-4D0E213D60A7}
+		{5BFE7988-8E70-478F-BE78-AB9963996AC0} = {7B2C3191-AB95-4FF2-B7CD-C05D1BD66716}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		        SolutionGuid = {61F7FB11-1E47-470C-91E2-47F8143E1572}

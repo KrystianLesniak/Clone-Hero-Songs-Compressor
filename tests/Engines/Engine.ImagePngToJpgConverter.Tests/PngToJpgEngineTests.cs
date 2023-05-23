@@ -1,16 +1,17 @@
 using Engine.FFmpegProvider;
-using Moq;
+using Engine.Tests.Common;
 using SongsCompressor.Common.Enums;
-using SongsCompressor.Common.Interfaces;
 using SongsCompressor.Common.Services;
-using System.IO;
+using System.Runtime.CompilerServices;
 
 namespace Engine.ImagePngToJpgConverter.Tests
 {
     [TestFixture]
     public class PngToJpgEngineTests
     {
-        private readonly string _directory = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "resources", "dir1");
+        private readonly string _resourcesDirectory = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "resources", "dir1");
+        private readonly string _uniqueDirectoriesParent = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Test_Directory");
+
 
         private readonly IList<OptionsEnum> _baseOptionsEnum = new List<OptionsEnum>
         {
@@ -26,39 +27,41 @@ namespace Engine.ImagePngToJpgConverter.Tests
         [OneTimeSetUp]
         public async Task OneTimeSetUp()
         {
-            Directory.CreateDirectory(_directory);
-
             var ffmpegProvideEngine = ProvideFFmpegEngine.Create(_baseOptionsEnum);
             await ffmpegProvideEngine!.Start();
         }
 
-        [TearDown]
-        public void TearDown()
+        [OneTimeTearDown]
+        public void OneTimeTearDown()
         {
-
-            foreach (string sFile in Directory.GetFiles(_directory, "*.jpg"))
-            {
-                File.Delete(sFile);
-            }
+            Directory.Delete(_uniqueDirectoriesParent, true);
         }
 
+        private Task<DirectoryInfo> PrepareUniqureDirectoryForTest([CallerMemberName] string caller = "")
+        {
+            var directoryPath = Path.Combine(_uniqueDirectoriesParent, caller);
+
+            EngineTestHelpers.CopyDirectory(_resourcesDirectory, directoryPath);
+
+            return Task.FromResult(new DirectoryInfo(directoryPath));
+        }
+
+
         [Test]
-        [NonParallelizable]
         public async Task SuccessfullyConvertedNumberOfFiles()
         {
             //Arrange
-            var directoryInfo = new DirectoryInfo(_directory);
-            var originalPngFilesLength = Directory.GetFiles(_directory, "*.png", SearchOption.AllDirectories).Length;
+            var directoryInfo = await PrepareUniqureDirectoryForTest();
+            var originalPngFilesLength = directoryInfo.GetFiles("*.png", SearchOption.AllDirectories).Length;
             var engine =  PngToJpgEngine.Create(_baseOptionsEnum, directoryInfo,  new BackupHandler(directoryInfo, _baseOptionsEnum));
 
             //Act
             await engine!.Start();
-            //TODO: WTF check why this delay is needed
-            await Task.Delay(200);
             var progress = await engine.GetCurrentProgress();
+
             //Assert
-            var jpgFilesLength = Directory.GetFiles(_directory, "*.jpg", SearchOption.AllDirectories).Length;
-            var pngFilesLength = Directory.GetFiles(_directory, "*.png", SearchOption.AllDirectories).Length;
+            var jpgFilesLength = directoryInfo.GetFiles("*.jpg", SearchOption.AllDirectories).Length;
+            var pngFilesLength = directoryInfo.GetFiles("*.png", SearchOption.AllDirectories).Length;
 
             Assert.That(progress.PercentageComplete, Is.EqualTo(100));
             Assert.That(progress.WorkDescription, Is.EqualTo("Compressing images from PNG to JPEG format finished"));
@@ -67,11 +70,10 @@ namespace Engine.ImagePngToJpgConverter.Tests
         }
 
         [Test]
-        [NonParallelizable]
         public async Task ConvertedImagesAreSmallerThanOriginal()
         {
             //Arrange
-            var directoryInfo = new DirectoryInfo(_directory);
+            var directoryInfo = await PrepareUniqureDirectoryForTest();
             var originalPngFiles = directoryInfo.GetFiles("*.png", SearchOption.AllDirectories);
             var engine = PngToJpgEngine.Create(_baseOptionsEnum, directoryInfo, new BackupHandler(directoryInfo, _baseOptionsEnum));
 
@@ -90,7 +92,5 @@ namespace Engine.ImagePngToJpgConverter.Tests
         }
 
         //TODO: Add test for resizing
-        //TODO: Add more files
-
     }
 }
