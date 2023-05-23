@@ -19,7 +19,7 @@ namespace SongsCompressor.MainManager.Tests
         [SetUp]
         public void SetUp()
         {
-            foreach(var directory in _directories)
+            foreach (var directory in _directories)
             {
                 if (Directory.Exists(directory))
                 {

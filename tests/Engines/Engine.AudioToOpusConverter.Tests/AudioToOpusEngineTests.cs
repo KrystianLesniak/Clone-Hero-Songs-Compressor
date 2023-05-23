@@ -1,8 +1,8 @@
 using Engine.FFmpegProvider;
-using Tests.Common;
 using SongsCompressor.Common.Enums;
 using SongsCompressor.Common.Services;
 using System.Runtime.CompilerServices;
+using Tests.Common;
 
 namespace Engine.AudioToOpusConverter.Tests
 {
