@@ -46,6 +46,19 @@ namespace Engine.ImagePngToJpgConverter.Tests
             return Task.FromResult(new DirectoryInfo(directoryPath));
         }
 
+        [Test]
+        public async Task EngineNotInitializedProperly()
+        {
+            //Arrange
+            var directoryInfo = await PrepareUniqureDirectoryForTest();
+
+            //Act
+            var engine = PngToJpgEngine.Create(new List<OptionsEnum> { OptionsEnum.ResizeAlbum, OptionsEnum.CreateBackup, OptionsEnum.ConvertAudioToOpus }, directoryInfo, new BackupHandler(directoryInfo, _baseOptionsEnum));
+
+            //Assert
+            Assert.That(engine, Is.Null);
+        }
+
 
         [Test]
         public async Task SuccessfullyConvertedNumberOfFiles()

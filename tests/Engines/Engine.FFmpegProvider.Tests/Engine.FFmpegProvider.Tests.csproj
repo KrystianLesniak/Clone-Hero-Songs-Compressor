@@ -20,4 +20,9 @@
     </PackageReference>
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\src\Engines\Engine.FFmpegProvider\Engine.FFmpegProvider.csproj" />
+    <ProjectReference Include="..\..\..\src\SongsCompressor.Common\SongsCompressor.Common.csproj" />
+  </ItemGroup>
+
 </Project>
