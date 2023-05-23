@@ -26,6 +26,7 @@
     <ProjectReference Include="..\..\..\src\Engines\Engine.ImagePngToJpgConverter\Engine.ImagePngToJpgConverter.csproj" />
     <ProjectReference Include="..\..\..\src\SongsCompressor.Services\SongsCompressor.Services.csproj" />
     <ProjectReference Include="..\Engine.Tests.Common\Engine.Tests.Common.csproj" />
+    <ProjectReference Include="..\Tests.Common\Tests.Common.csproj" />
   </ItemGroup>
 
   <ItemGroup>

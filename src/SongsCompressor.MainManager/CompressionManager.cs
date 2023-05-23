@@ -79,7 +79,7 @@ namespace SongCompressor.MainManager
             {
                 var directoryInfo = new DirectoryInfo(directory);
 
-                var backupHandler = new BackupHandler(directoryInfo, options);
+                var backupHandler = new DirectoryBackupHandler(directoryInfo, options);
 
                 addEngine(PngToJpgEngine.Create(options, directoryInfo, backupHandler));
                 addEngine(AudioToOpusEngine.Create(options, directoryInfo, backupHandler));

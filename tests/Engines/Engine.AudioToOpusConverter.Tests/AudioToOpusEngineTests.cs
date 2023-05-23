@@ -1,5 +1,5 @@
 using Engine.FFmpegProvider;
-using Engine.Tests.Common;
+using Tests.Common;
 using SongsCompressor.Common.Enums;
 using SongsCompressor.Common.Services;
 using System.Runtime.CompilerServices;
@@ -30,7 +30,7 @@ namespace Engine.AudioToOpusConverter.Tests
         {
             var directoryPath = Path.Combine(_uniqueDirectoriesParent, caller);
 
-            EngineTestHelpers.CopyDirectory(_resourcesDirectory, directoryPath);
+            TestHelpers.CopyDirectory(_resourcesDirectory, directoryPath);
 
             return Task.FromResult(new DirectoryInfo(directoryPath));
         }
@@ -43,7 +43,7 @@ namespace Engine.AudioToOpusConverter.Tests
 
             //Act
             var options = new List<OptionsEnum> { OptionsEnum.ResizeAlbum, OptionsEnum.CreateBackup, OptionsEnum.ConvertAudioFromMp3, OptionsEnum.ConvertAudioFromOgg };
-            var engine = AudioToOpusEngine.Create(options, directoryInfo, new BackupHandler(directoryInfo, options));
+            var engine = AudioToOpusEngine.Create(options, directoryInfo, new DirectoryBackupHandler(directoryInfo, options));
 
             //Assert
             Assert.That(engine, Is.Null);
@@ -58,7 +58,7 @@ namespace Engine.AudioToOpusConverter.Tests
 
             //Act
             var options = new List<OptionsEnum> { OptionsEnum.ConvertAudioToOpus, OptionsEnum.ConvertAudioFromMp3, OptionsEnum.ConvertAudioFromOgg };
-            var engine = AudioToOpusEngine.Create(options, directoryInfo, new BackupHandler(directoryInfo, options));
+            var engine = AudioToOpusEngine.Create(options, directoryInfo, new DirectoryBackupHandler(directoryInfo, options));
 
             //Assert
             Assert.That(engine, Is.Not.Null);
@@ -74,7 +74,7 @@ namespace Engine.AudioToOpusConverter.Tests
             var originalMp3Length = directoryInfo.GetFiles("*.mp3", SearchOption.AllDirectories).Length;
 
             var options = new List<OptionsEnum> { OptionsEnum.ConvertAudioToOpus, OptionsEnum.ConvertAudioFromMp3 };
-            var engine = AudioToOpusEngine.Create(options, directoryInfo, new BackupHandler(directoryInfo, options));
+            var engine = AudioToOpusEngine.Create(options, directoryInfo, new DirectoryBackupHandler(directoryInfo, options));
 
             //Act
             await engine!.Start();
@@ -103,7 +103,7 @@ namespace Engine.AudioToOpusConverter.Tests
             var originalMp3Length = directoryInfo.GetFiles("*.mp3", SearchOption.AllDirectories).Length;
 
             var options = new List<OptionsEnum> { OptionsEnum.ConvertAudioToOpus, OptionsEnum.ConvertAudioFromOgg };
-            var engine = AudioToOpusEngine.Create(options, directoryInfo, new BackupHandler(directoryInfo, options));
+            var engine = AudioToOpusEngine.Create(options, directoryInfo, new DirectoryBackupHandler(directoryInfo, options));
 
             //Act
             await engine!.Start();
@@ -133,7 +133,7 @@ namespace Engine.AudioToOpusConverter.Tests
                 + directoryInfo.GetFiles("*.mp3", SearchOption.AllDirectories).Length;
 
             var options = new List<OptionsEnum> { OptionsEnum.ConvertAudioToOpus, OptionsEnum.ConvertAudioFromMp3, OptionsEnum.ConvertAudioFromOgg };
-            var engine = AudioToOpusEngine.Create(options, directoryInfo, new BackupHandler(directoryInfo, options));
+            var engine = AudioToOpusEngine.Create(options, directoryInfo, new DirectoryBackupHandler(directoryInfo, options));
 
             //Act
             await engine!.Start();
@@ -162,7 +162,7 @@ namespace Engine.AudioToOpusConverter.Tests
                 .Union(directoryInfo.GetFiles("*.ogg", SearchOption.AllDirectories));
 
             var options = new List<OptionsEnum> { OptionsEnum.ConvertAudioToOpus, OptionsEnum.ConvertAudioFromMp3, OptionsEnum.ConvertAudioFromOgg };
-            var engine = AudioToOpusEngine.Create(options, directoryInfo, new BackupHandler(directoryInfo, options));
+            var engine = AudioToOpusEngine.Create(options, directoryInfo, new DirectoryBackupHandler(directoryInfo, options));
 
             //Act
             await engine!.Start();

@@ -20,4 +20,26 @@
     </PackageReference>
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="resources\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\SongsCompressor.Common\SongsCompressor.Common.csproj" />
+    <ProjectReference Include="..\..\src\SongsCompressor.Services\SongsCompressor.Services.csproj" />
+    <ProjectReference Include="..\Engines\Tests.Common\Tests.Common.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="resources\file_example_MP3_2MG.mp3">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="resources\file_example_MP4_640_3MG.mp4">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="resources\file_example_OGG_1280_11_4mg.ogg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>
