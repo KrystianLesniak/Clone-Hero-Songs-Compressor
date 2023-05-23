@@ -23,6 +23,7 @@
     <PackageReference Include="FluentValidation" Version="11.5.2" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebView.Wpf" Version="7.0.86" />
     <PackageReference Include="MudBlazor" Version="6.2.5" />
+    <PackageReference Include="NLog" Version="5.1.4" />
     <PackageReference Include="Ookii.Dialogs.Wpf" Version="5.0.1" />
   </ItemGroup>
 

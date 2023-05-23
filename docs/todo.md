@@ -1,3 +1,1 @@
-## Before beta release:
-* Unit tests
-* Logging
+* Cancel in progress feature
