@@ -20,4 +20,36 @@
     </PackageReference>
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\src\Engines\Engine.AudioToOpusConverter\Engine.AudioToOpusConverter.csproj" />
+    <ProjectReference Include="..\..\..\src\Engines\Engine.FFmpegProvider\Engine.FFmpegProvider.csproj" />
+    <ProjectReference Include="..\..\..\src\SongsCompressor.Services\SongsCompressor.Services.csproj" />
+    <ProjectReference Include="..\Engine.Tests.Common\Engine.Tests.Common.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="resources\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="resources\file_example_MP3_2MG.mp3">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="resources\Free_Test_Data_2MB_OGG.ogg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="resources\Free_Test_Data_500KB_OGG.ogg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="resources\subfolder\Free_Test_Data_2MB_MP3.mp3">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="resources\subfolder\Free_Test_Data_5MB_MP3.mp3">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="resources\subfolder\getsamplefiles_com_sample_2.ogg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>
