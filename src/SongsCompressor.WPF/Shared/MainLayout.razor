@@ -10,11 +10,11 @@
     <MudAppBar Elevation="1">
         <MudImage Src="images/logo_transparent.png" Alt="Logo" />
         <MudSpacer />
+        <VersionInformation></VersionInformation>
         <MudToggleIconButton @bind-Toggled="@_isDarkMode"
                              Icon="@Icons.Material.Filled.LightMode" Color="Color.Inherit" Title="Light Mode"
                              ToggledIcon="@Icons.Material.Filled.DarkMode" ToggledTitle="Dark Mode" />
         <MudIconButton Icon="@Icons.Material.Filled.QuestionMark" Color="Color.Inherit" Edge="Edge.End" OnClick="@((e) => NavigateToGitHub())" />
-        <VersionInformation></VersionInformation>
     </MudAppBar>
     <MudMainContent>
         <MudContainer MaxWidth="MaxWidth.Medium">
