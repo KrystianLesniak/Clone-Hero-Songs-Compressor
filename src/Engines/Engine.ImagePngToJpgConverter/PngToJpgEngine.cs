@@ -20,7 +20,7 @@ namespace Engine.ImagePngToJpgConverter
         private int pngFilesCount;
         private int pngFilesConvertedCount;
 
-        private PngToJpgEngine(DirectoryInfo directoryInfo, IEnumerable<OptionsEnum> options, IBackupHandler backupHandler)
+        private PngToJpgEngine(IEnumerable<OptionsEnum> options, DirectoryInfo directoryInfo, IBackupHandler backupHandler)
         {
             this.directoryInfo = directoryInfo ?? throw new ArgumentNullException(nameof(directoryInfo));
             this.options = options ?? throw new ArgumentNullException(nameof(options));
@@ -30,7 +30,7 @@ namespace Engine.ImagePngToJpgConverter
         public static ICompressionEngine? Create(IList<OptionsEnum> options, DirectoryInfo directoryInfo, IBackupHandler backupHandler)
         {
             if (options.Contains(OptionsEnum.ConvertPngToJpg))
-                return new PngToJpgEngine(directoryInfo, options, backupHandler);
+                return new PngToJpgEngine(options, directoryInfo, backupHandler);
 
             return null;
         }
