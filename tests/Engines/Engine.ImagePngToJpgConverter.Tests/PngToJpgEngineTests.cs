@@ -1,5 +1,5 @@
 using Engine.FFmpegProvider;
-using Engine.Tests.Common;
+using Tests.Common;
 using SongsCompressor.Common.Enums;
 using SongsCompressor.Common.Services;
 using System.Runtime.CompilerServices;
@@ -41,7 +41,7 @@ namespace Engine.ImagePngToJpgConverter.Tests
         {
             var directoryPath = Path.Combine(_uniqueDirectoriesParent, caller);
 
-            EngineTestHelpers.CopyDirectory(_resourcesDirectory, directoryPath);
+            TestHelpers.CopyDirectory(_resourcesDirectory, directoryPath);
 
             return Task.FromResult(new DirectoryInfo(directoryPath));
         }
@@ -53,7 +53,7 @@ namespace Engine.ImagePngToJpgConverter.Tests
             var directoryInfo = await PrepareUniqureDirectoryForTest();
 
             //Act
-            var engine = PngToJpgEngine.Create(new List<OptionsEnum> { OptionsEnum.ResizeAlbum, OptionsEnum.CreateBackup, OptionsEnum.ConvertAudioToOpus }, directoryInfo, new BackupHandler(directoryInfo, _baseOptionsEnum));
+            var engine = PngToJpgEngine.Create(new List<OptionsEnum> { OptionsEnum.ResizeAlbum, OptionsEnum.CreateBackup, OptionsEnum.ConvertAudioToOpus }, directoryInfo, new DirectoryBackupHandler(directoryInfo, _baseOptionsEnum));
 
             //Assert
             Assert.That(engine, Is.Null);
@@ -66,7 +66,7 @@ namespace Engine.ImagePngToJpgConverter.Tests
             //Arrange
             var directoryInfo = await PrepareUniqureDirectoryForTest();
             var originalPngFilesLength = directoryInfo.GetFiles("*.png", SearchOption.AllDirectories).Length;
-            var engine =  PngToJpgEngine.Create(_baseOptionsEnum, directoryInfo,  new BackupHandler(directoryInfo, _baseOptionsEnum));
+            var engine =  PngToJpgEngine.Create(_baseOptionsEnum, directoryInfo,  new DirectoryBackupHandler(directoryInfo, _baseOptionsEnum));
 
             //Act
             await engine!.Start();
@@ -88,7 +88,7 @@ namespace Engine.ImagePngToJpgConverter.Tests
             //Arrange
             var directoryInfo = await PrepareUniqureDirectoryForTest();
             var originalPngFiles = directoryInfo.GetFiles("*.png", SearchOption.AllDirectories);
-            var engine = PngToJpgEngine.Create(_baseOptionsEnum, directoryInfo, new BackupHandler(directoryInfo, _baseOptionsEnum));
+            var engine = PngToJpgEngine.Create(_baseOptionsEnum, directoryInfo, new DirectoryBackupHandler(directoryInfo, _baseOptionsEnum));
 
             //Act
             await engine!.Start();
