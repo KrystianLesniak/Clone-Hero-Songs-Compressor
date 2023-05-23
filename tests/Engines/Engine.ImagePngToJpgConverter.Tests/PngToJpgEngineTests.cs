@@ -1,8 +1,8 @@
 using Engine.FFmpegProvider;
-using Tests.Common;
 using SongsCompressor.Common.Enums;
 using SongsCompressor.Common.Services;
 using System.Runtime.CompilerServices;
+using Tests.Common;
 
 namespace Engine.ImagePngToJpgConverter.Tests
 {
@@ -66,7 +66,7 @@ namespace Engine.ImagePngToJpgConverter.Tests
             //Arrange
             var directoryInfo = await PrepareUniqureDirectoryForTest();
             var originalPngFilesLength = directoryInfo.GetFiles("*.png", SearchOption.AllDirectories).Length;
-            var engine =  PngToJpgEngine.Create(_baseOptionsEnum, directoryInfo,  new DirectoryBackupHandler(directoryInfo, _baseOptionsEnum));
+            var engine = PngToJpgEngine.Create(_baseOptionsEnum, directoryInfo, new DirectoryBackupHandler(directoryInfo, _baseOptionsEnum));
 
             //Act
             await engine!.Start();
@@ -96,7 +96,7 @@ namespace Engine.ImagePngToJpgConverter.Tests
             //Assert
             var jpgFiles = directoryInfo.GetFiles("*.jpg", SearchOption.AllDirectories);
 
-            foreach(var jpgFile in jpgFiles)
+            foreach (var jpgFile in jpgFiles)
             {
                 var originalPng = originalPngFiles.First(x => x.Name == jpgFile.Name.Replace(".jpg", ".png"));
 

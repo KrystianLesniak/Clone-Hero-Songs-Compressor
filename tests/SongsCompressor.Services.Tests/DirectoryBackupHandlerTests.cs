@@ -1,6 +1,5 @@
 using SongsCompressor.Common.Enums;
 using SongsCompressor.Common.Services;
-using System.IO;
 using System.Runtime.CompilerServices;
 using Tests.Common;
 
