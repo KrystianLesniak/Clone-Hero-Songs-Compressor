@@ -1,0 +1,35 @@
+# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-net
+
+name: Publish Application
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+
+    runs-on: windows-latest
+    strategy:
+      matrix:
+        dotnet-version: [ '7.0.x' ]
+    defaults:
+      run:
+        working-directory: src 
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: ${{ matrix.dotnet-version }}
+    - name: Publish application
+      shell: pwsh
+      run: |
+        .\publish.ps1
+    - name: Upload artifacts
+      uses: actions/upload-artifact@v3
+      with:
+        name: application
+        path: application.zip
+        if-no-files-found: error
+        retention-days: 7
