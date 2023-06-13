@@ -18,6 +18,9 @@ jobs:
     strategy:
       matrix:
         dotnet-version: [ '7.0.x' ]
+    defaults:
+      run:
+        working-directory: src 
 
     steps:
     - uses: actions/checkout@v3
