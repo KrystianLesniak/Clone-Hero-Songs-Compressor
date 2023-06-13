@@ -12,4 +12,4 @@ if (Test-Path "application.zip") {
     Remove-Item "application.zip"
 }
 
-Compress-Archive -Path publish/* -DestinationPath application.zip
+Compress-Archive -Path "publish/*" -DestinationPath "application.zip"
