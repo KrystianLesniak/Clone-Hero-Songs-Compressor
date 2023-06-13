@@ -1,4 +1,4 @@
-![Application logo](src/CloneHeroSongsCompressor/wwwroot/images/logo_transparent.png?raw=true)
+![Application logo](src/CloneHeroSongsCompressor.WPF/wwwroot/images/logo_transparent.png?raw=true)
 ***
 [![GitHub release (latest by date)](https://img.shields.io/github/v/release/KrystianLesniak/Clone-Hero-Songs-Compressor)](https://github.com/KrystianLesniak/Clone-Hero-Songs-Compressor/releases)
 [![GitHub release downloads](https://img.shields.io/github/downloads/KrystianLesniak/Clone-Hero-Songs-Compressor/total)](https://github.com/KrystianLesniak/Clone-Hero-Songs-Compressor/releases)
