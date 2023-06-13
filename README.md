@@ -8,7 +8,7 @@ Clone Hero Songs Compressor is a tool that significantly reduces the size of you
 ![Application screenshoot](docs/img/app-screenshot.png?raw=true)
 
 
-Note that this process is very resource hungry and can take up to several hours on slower PC. At my personal PC (i9-7900x) library **compression from size 11.4GB to 5.4GB took 9 minutes.** It is of course example and results may vary depending on the user's hardware and library size.
+Note that this process is very resource hungry and may take a long time on slower PCs. At my personal PCs library compression from size **11.4GB to 5.4GB** took respectively **9 minutes (i9-7900x) and 5 minutes (78000X3D).** It is of course example and results may vary depending on the user's hardware and library size.
 
 ***
 ## Download & Usage Instructions
