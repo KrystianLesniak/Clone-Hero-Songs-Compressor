@@ -30,6 +30,6 @@ jobs:
       uses: actions/upload-artifact@v3
       with:
         name: application
-        path: ${{env.working-directory}}/application.zip
+        path: src/application.zip
         if-no-files-found: error
         retention-days: 7
