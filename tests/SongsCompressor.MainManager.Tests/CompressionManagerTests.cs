@@ -1,7 +1,7 @@
 using Engine.AudioToOpusConverter;
 using Engine.FFmpegProvider;
 using Engine.ImagePngToJpgConverter;
-using Moq;
+using NSubstitute;
 using SongCompressor.MainManager;
 using SongsCompressor.Common.Enums;
 using SongsCompressor.Common.Interfaces.Services;
@@ -33,15 +33,15 @@ namespace SongsCompressor.MainManager.Tests
         [Test]
         public void WhenStart_DirectoryNotFound_ThrowDirectoryNotFoundException()
         {
-            var settingsStorageMock = new Mock<ISettingsStorage>();
+            var settingsStorageMock =  Substitute.For<ISettingsStorage>();
             var settings = new UserSettings
             {
                 Directories = new List<string> { "not_existing_dir", "same" },
                 Options = new List<OptionsEnum> { OptionsEnum.ConvertAudioToOpus, OptionsEnum.ConvertPngToJpg }
             };
-            settingsStorageMock.Setup(x => x.SaveSettings(settings)).Returns(Task.CompletedTask);
+            settingsStorageMock.SaveSettings(settings).Returns(Task.CompletedTask);
 
-            var compressionManager = new CompressionManager(settingsStorageMock.Object);
+            var compressionManager = new CompressionManager(settingsStorageMock);
 
             Assert.ThrowsAsync<DirectoryNotFoundException>(
                 async () => await compressionManager.Initialize(settings));
@@ -50,15 +50,15 @@ namespace SongsCompressor.MainManager.Tests
         [Test]
         public void WhenStart_NoDirectories_ThrowArgumentException()
         {
-            var settingsStorageMock = new Mock<ISettingsStorage>();
+            var settingsStorageMock = Substitute.For<ISettingsStorage>();
             var settings = new UserSettings
             {
                 Directories = new List<string>(),
                 Options = new List<OptionsEnum> { OptionsEnum.ConvertAudioToOpus, OptionsEnum.ConvertPngToJpg }
             };
-            settingsStorageMock.Setup(x => x.SaveSettings(settings)).Returns(Task.CompletedTask);
+            settingsStorageMock.SaveSettings(settings).Returns(Task.CompletedTask);
 
-            var compressionManager = new CompressionManager(settingsStorageMock.Object);
+            var compressionManager = new CompressionManager(settingsStorageMock);
 
             Assert.ThrowsAsync<ArgumentException>(
                                async () => await compressionManager.Initialize(settings));
@@ -67,15 +67,15 @@ namespace SongsCompressor.MainManager.Tests
         [Test]
         public void WhenStart_NoOptions_ThrowArgumentException()
         {
-            var settingsStorageMock = new Mock<ISettingsStorage>();
+            var settingsStorageMock = Substitute.For<ISettingsStorage>();
             var settings = new UserSettings
             {
                 Directories = _directories,
                 Options = new List<OptionsEnum>()
             };
-            settingsStorageMock.Setup(x => x.SaveSettings(settings)).Returns(Task.CompletedTask);
+            settingsStorageMock.SaveSettings(settings).Returns(Task.CompletedTask);
 
-            var compressionManager = new CompressionManager(settingsStorageMock.Object);
+            var compressionManager = new CompressionManager(settingsStorageMock);
 
             Assert.ThrowsAsync<ArgumentException>(
                                               async () => await compressionManager.Initialize(settings));
@@ -85,52 +85,55 @@ namespace SongsCompressor.MainManager.Tests
         [Test]
         public async Task InitializeEnginesTest()
         {
-            var settingsStorageMock = new Mock<ISettingsStorage>();
+            var settingsStorageMock = Substitute.For<ISettingsStorage>();
             var settings = new UserSettings
             {
                 Directories = _directories,
                 Options = new List<OptionsEnum> { OptionsEnum.ConvertAudioToOpus, OptionsEnum.ConvertPngToJpg }
             };
-            settingsStorageMock.Setup(x => x.SaveSettings(settings)).Returns(Task.CompletedTask);
+            settingsStorageMock.SaveSettings(settings).Returns(Task.CompletedTask);
 
-            var compressionManager = new CompressionManager(settingsStorageMock.Object);
+            var compressionManager = new CompressionManager(settingsStorageMock);
             await compressionManager.Initialize(settings);
 
             var progress = await compressionManager.GetCurrentProgressStatus();
-
-            Assert.That(compressionManager.Engines.Any(x => x is ProvideFFmpegEngine));
-            Assert.That(compressionManager.Engines.Any(x => x is PngToJpgEngine));
-            Assert.That(compressionManager.Engines.Any(x => x is AudioToOpusEngine));
-            Assert.That(compressionManager.Engines.All(x => x.Completed == false));
-            Assert.That(progress.EnginesFinished, Is.EqualTo(0));
-            Assert.That(progress.OverallEnginePercentageComplete, Is.EqualTo(0));
+            Assert.Multiple(() =>
+            {
+                Assert.That(compressionManager.Engines.Any(x => x is ProvideFFmpegEngine));
+                Assert.That(compressionManager.Engines.Any(x => x is PngToJpgEngine));
+                Assert.That(compressionManager.Engines.Any(x => x is AudioToOpusEngine));
+                Assert.That(compressionManager.Engines.All(x => x.Completed == false));
+                Assert.That(progress.EnginesFinished, Is.EqualTo(0));
+                Assert.That(progress.OverallEnginePercentageComplete, Is.EqualTo(0));
+            });
         }
 
         [Test]
         public async Task StartTest()
         {
-            var settingsStorageMock = new Mock<ISettingsStorage>();
+            var settingsStorageMock = Substitute.For<ISettingsStorage>();
             var settings = new UserSettings
             {
                 Directories = _directories,
                 Options = new List<OptionsEnum> { OptionsEnum.ConvertAudioToOpus, OptionsEnum.ConvertPngToJpg }
             };
-            settingsStorageMock.Setup(x => x.SaveSettings(settings)).Returns(Task.CompletedTask);
+            settingsStorageMock.SaveSettings(settings).Returns(Task.CompletedTask);
 
-            var compressionManager = new CompressionManager(settingsStorageMock.Object);
+            var compressionManager = new CompressionManager(settingsStorageMock);
             await compressionManager.Initialize(settings);
 
             await compressionManager.Start();
 
             var progress = await compressionManager.GetCurrentProgressStatus();
-
-            Assert.That(compressionManager.Engines.Any(x => x is ProvideFFmpegEngine));
-            Assert.That(compressionManager.Engines.Any(x => x is PngToJpgEngine));
-            Assert.That(compressionManager.Engines.Any(x => x is AudioToOpusEngine));
-            Assert.That(compressionManager.Engines.All(x => x.Completed));
-            Assert.That(progress.EnginesFinished, Is.EqualTo(compressionManager.Engines.Count));
-            Assert.That(progress.OverallEnginePercentageComplete, Is.EqualTo(100));
+            Assert.Multiple(() =>
+            {
+                Assert.That(compressionManager.Engines.Any(x => x is ProvideFFmpegEngine));
+                Assert.That(compressionManager.Engines.Any(x => x is PngToJpgEngine));
+                Assert.That(compressionManager.Engines.Any(x => x is AudioToOpusEngine));
+                Assert.That(compressionManager.Engines.All(x => x.Completed));
+                Assert.That(progress.EnginesFinished, Is.EqualTo(compressionManager.Engines.Count));
+                Assert.That(progress.OverallEnginePercentageComplete, Is.EqualTo(100));
+            });
         }
-
     }
 }
