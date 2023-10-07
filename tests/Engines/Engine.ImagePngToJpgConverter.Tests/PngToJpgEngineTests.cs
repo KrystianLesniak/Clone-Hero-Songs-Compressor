@@ -75,11 +75,13 @@ namespace Engine.ImagePngToJpgConverter.Tests
             //Assert
             var jpgFilesLength = directoryInfo.GetFiles("*.jpg", SearchOption.AllDirectories).Length;
             var pngFilesLength = directoryInfo.GetFiles("*.png", SearchOption.AllDirectories).Length;
-
-            Assert.That(progress.PercentageComplete, Is.EqualTo(100));
-            Assert.That(progress.WorkDescription, Is.EqualTo("Compressing images from PNG to JPEG format finished"));
-            Assert.That(jpgFilesLength, Is.EqualTo(originalPngFilesLength));
-            Assert.That(pngFilesLength, Is.EqualTo(0));
+            Assert.Multiple(() =>
+            {
+                Assert.That(progress.PercentageComplete, Is.EqualTo(100));
+                Assert.That(progress.WorkDescription, Is.EqualTo("Compressing images from PNG to JPEG format finished"));
+                Assert.That(jpgFilesLength, Is.EqualTo(originalPngFilesLength));
+                Assert.That(pngFilesLength, Is.EqualTo(0));
+            });
         }
 
         [Test]

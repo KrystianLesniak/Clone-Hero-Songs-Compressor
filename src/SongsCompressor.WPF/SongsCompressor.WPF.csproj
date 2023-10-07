@@ -2,7 +2,7 @@
 
   <PropertyGroup>
 	<AssemblyName>Clone Hero Songs Compressor</AssemblyName>
-	<VersionPrefix>0.1.0</VersionPrefix>
+	<VersionPrefix>0.1.1</VersionPrefix>
 	<VersionSuffix>beta</VersionSuffix>
 	<RootNamespace>SongsCompressor.WPF</RootNamespace>
 	<OutputType>WinExe</OutputType>
@@ -20,10 +20,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="FluentValidation" Version="11.5.2" />
-    <PackageReference Include="Microsoft.AspNetCore.Components.WebView.Wpf" Version="7.0.86" />
-    <PackageReference Include="MudBlazor" Version="6.2.5" />
-    <PackageReference Include="NLog.Extensions.Logging" Version="5.2.3" />
+    <PackageReference Include="FluentValidation" Version="11.7.1" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.WebView.Wpf" Version="7.0.92" />
+    <PackageReference Include="MudBlazor" Version="6.10.0" />
+    <PackageReference Include="NLog.Extensions.Logging" Version="5.3.4" />
     <PackageReference Include="Ookii.Dialogs.Wpf" Version="5.0.1" />
   </ItemGroup>
 
