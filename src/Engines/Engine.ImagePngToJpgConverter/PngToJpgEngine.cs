@@ -81,7 +81,11 @@ namespace Engine.ImagePngToJpgConverter
                 }
             }
 
-            pngFileInfo.Delete();
+            if (File.Exists(outputPath))
+            {
+                pngFileInfo.IsReadOnly = false;
+                pngFileInfo.Delete();
+            }
         }
     }
 }

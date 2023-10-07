@@ -85,7 +85,11 @@ namespace Engine.AudioToOpusConverter
                     .WithAudioBitrate(96))
                 .ProcessAsynchronously();
 
-            audioFile.Delete();
+            if (File.Exists(outputPath)) //TODO: This logic may be moved to common handler or backup handler
+            {
+                audioFile.IsReadOnly = false;
+                audioFile.Delete();
+            }
         }
     }
 }
