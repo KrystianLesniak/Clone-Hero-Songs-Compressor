@@ -9,7 +9,7 @@
 
 <MudText hidden="@(_newVersionString is null)" Class="mr-4">
     v @_localVersion?.ToString(3)<br />
-    <MudLink Target="_blank" Color="Color.Secondary" Href="@AppInfoConsts.RepositoryReleasesUrl">New Update!</MudLink>
+    <MudLink Target="_blank" Color="Color.Secondary" Href="@AppInfoConsts.LatestReleasesUrl">New Update!</MudLink>
 </MudText>
 
 @code {
@@ -49,7 +49,7 @@
 
             if (result ?? false)
             {
-                await jsRuntime.InvokeAsync<object>("open", AppInfoConsts.RepositoryReleasesUrl, "_blank");
+                await jsRuntime.InvokeAsync<object>("open", AppInfoConsts.LatestReleasesUrl, "_blank");
             }
         }
     }
